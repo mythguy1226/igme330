@@ -19,24 +19,37 @@ function main()
     }
 
     // Function for generating new babble text
-    function generateText()
+    function generateTechno(num)
     {
-        // Get 3 new random words
-        let word1 = getRandomElement(words1);
-        let word2 = getRandomElement(words2);
-        let word3 = getRandomElement(words3);
+        let fullPhrase = "";
+        for(let i = 0; i < num; i++)
+        {
+            // Get 3 new random words
+            let word1 = getRandomElement(words1);
+            let word2 = getRandomElement(words2);
+            let word3 = getRandomElement(words3);
 
-        // Form the new phrase
-        let babblePhrase = word1 + " " + word2 + " " + word3;
+            // Form the new phrase
+            let babblePhrase = word1 + " " + word2 + " " + word3;
+            fullPhrase += babblePhrase + "<br>";
+        }
 
         // Change the output HTML text
-        document.querySelector("#output").innerHTML = babblePhrase;
+        document.querySelector("#output").innerHTML = fullPhrase;
     }
 
     // Generate some initial text
-    generateText();
+    generateTechno(1);
 
     // Add the event listener to the button for generating new text
     const button = document.querySelector("#myButton");
-    button.onclick = generateText;
+    button.onclick = function() {
+        generateTechno(1);
+    };
+
+    // Add event listener for multi-babble calls
+    const multiButton = document.querySelector("#technoFive");
+    multiButton.onclick = function() {
+        generateTechno(5);
+    }
 }

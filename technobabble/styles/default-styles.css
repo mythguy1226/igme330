@@ -14,6 +14,12 @@ body
     height: 50pt;
     font-size: 15pt;
 }
+#technoFive
+{
+    width: 200px;
+    height: 50pt;
+    font-size: 15pt;
+}
 html, body, .container 
 {
     height: 100%;
@@ -40,7 +46,10 @@ html, body, .container
         justify-content: center;
         flex-direction: column;
     }
-
+    #technoFive
+    {
+        display: none;
+    }
     html, body, .container 
     {
         height: 100%;
@@ -70,6 +79,12 @@ html, body, .container
         background-color: #23D160;
     }
     #myButton
+    {
+        width: 300px;
+        height: 75pt;
+        font-size: 1.5rem;
+    }
+    #technoFive
     {
         width: 300px;
         height: 75pt;
@@ -123,5 +138,13 @@ html, body, .container
     #output
     {
         text-align: left;
+    }
+}
+
+@media only screen and (min-width: 1408px)
+{
+    #technoFive
+    {
+        display: inline-block;
     }
 }
