@@ -39,23 +39,38 @@ function generateTechno(num, words1, words2, words3)
 function loadTextXHR()
 {
     // Init variables
-    const url = "data/babble-data.csv"
+    const url = "data/babble-data.json"
     const xhr = new XMLHttpRequest();
 
     // XHR loading  handler
     xhr.onload = (e) => {
-        console.log(`In onload - HTTP Status Code = ${e.target.status}`);
-        const text = e.target.responseText;
-        console.log(`Success - the file length is ${text.length}`);
-        //const lines = text.split("\n");
-        //const dogNames = lines[0].split(",");
-        //const catNames = lines[1].split(",");
+        // Get the JSON Object and keys
+        const json = JSON.parse(e.target.responseText);
+        const keys = Object.keys(json);
 
-        // Get the names for dogs, cats, and birds
-        let [words1,words2,words3] = text.split("\n");
-        words1 = words1.split(",");
-        words2 = words2.split(",");
-        words3 = words3.split(",");
+        // Init word arrays
+        let words1,words2,words3 = [];
+
+        // Loop through JSON Object and get/set word arrays
+        let i = 0; // Iterator
+        for(let k of keys)
+        {
+            const obj = json[k];
+            // Conditional for getting word arrays
+            switch(i)
+            {
+                case 0:
+                    words1 = obj.words;
+                    break;
+                case 1:
+                    words2 = obj.words;
+                    break;
+                case 2:
+                    words3 = obj.words
+                    break;
+            }
+            i++;
+        }
 
         // Generate some initial text
         generateTechno(1, words1, words2, words3);
