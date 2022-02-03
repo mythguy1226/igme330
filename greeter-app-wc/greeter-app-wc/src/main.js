@@ -1,6 +1,8 @@
 import { formatGreeting } from "./utils.js";
 import "./app-footer.js";
-import "./app-header.js";
+//import "./app-header.js";
+//import "./app-header-slots.js";
+import "./app-header-slots-2.js";
 
 const input = document.querySelector("#input-firstname");
 const output = document.querySelector("#output");

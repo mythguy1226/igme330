@@ -20,12 +20,12 @@
 <body>
 	<!-- <app-header-slots>Greeter App - now with slots</app-header-slots> -->
 	<app-header-slots-2>
-		<span slot="my-title">Greeter App - now with slots</span>
-		<span slot="my-subtitle">Type in some text and click!</span>
+		<span slot="my-title">Welcome to Greeter</span>
+		<span slot="my-subtitle">Your #1 solution to greetings!</span>
 	</app-header-slots-2>
 	<nav class="navbar">
 		<div class="navbar-brand">
-			<a class="navbar-item" href="greeter-home.html">
+			<a class="navbar-item">
 				<span class="icon">
 					<i class="fas fa-handshake"></i>
 				</span>
@@ -40,11 +40,11 @@
 	
 		<div class="navbar-menu">
 			<div class="navbar-start">
-				<a class="navbar-item" href="greeter-home.html">
+				<a class="navbar-item has-text-weight-bold">
 					Home
 				</a>
 	
-				<a class="navbar-item has-text-weight-bold">
+				<a class="navbar-item" href="greeter-app.html">
 					App
 				</a>
 			</div>
@@ -52,35 +52,7 @@
 	</nav>
 
 	<main>
-		<div class="section has-background-light">	
-			<div class="container mb-2">
-				<button id="btn-hello" class="button is-primary is-medium" title="Say hello">
-					<span class="icon">
-						<i class="fas fa-handshake"></i>
-					</span>
-					<span>Hello</span>
-				</button>
-				<button id="btn-goodbye" class="button is-warning is-medium" title="Say goodbye">
-					<span class="icon">
-						<i class="fas fa-sign-out-alt pr-3"></i>
-					</span>
-					<span>Goodbye</span>
-				</button>
-				<span class="field">
-					<input id="input-firstname" class="input is-medium" style="width:33%" type="text" placeholder="Type in your name">
-				</span>
-			</div>
-			<div class="container">
-				<input type="checkbox" id="cb-forcefully" class="checkbox">
-				<label for="cb-forcefully"> Forcefully</label>
-			</div>
-		</div>
-
-		<div class="section has-background-light">
-			<div id="output" class="container has-text-weight-bold pb-3">
-				Instructions: Type in your name and click one of the buttons!
-			</div>	
-		</div>
+		Home Page
 	</main>
 
 	<app-footer data-text="Mythical-Coder"></app-footer>
