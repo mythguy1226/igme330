@@ -12,7 +12,8 @@ function main()
 function loadXmlXHR()
 {
     // Init variables
-    const url = "data/pet-names.json"
+    //const url = "data/pet-names.json"
+    const url = "https://dog.ceo/api/breed/hound/images/random/10"
     const xhr = new XMLHttpRequest();
 
     // XHR loading  handler
@@ -24,8 +25,11 @@ function loadXmlXHR()
         let html = "";
         for(let k of keys)
         {
-            const obj = json[k];
-            html += `<h3>${obj.title = obj.title ? obj.title: "No title found"}</h3> <ol>${obj["namelist"].map(w => `<li>${w}</li>`).join("")}</ol>`;
+            let obj = json[k];
+            for(let i = 0; i < obj.length; i++)
+            {
+                html += `<img src="${obj[i]}" alt="a dog">`;
+            }
         }
 
         // Set new html

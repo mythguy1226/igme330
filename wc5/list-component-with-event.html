@@ -100,6 +100,7 @@
 			console.log(`items setter called with val = ${val}`);
 			this._items = [...val]; // copy the array
 			this.render();
+			this.lengthChanged();
 		}
 	
 		get items() {
@@ -133,6 +134,7 @@
             if(index >= 0 && index < this._items.length){
                 this._items.splice(index, 1);
                 this.render();
+				this.lengthChanged();
             }
         }
 
