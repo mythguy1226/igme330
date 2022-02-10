@@ -1,0 +1,59 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Marvel Character Searcher</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <nav class="navbar has-shadow is-white">
+        <!-- logo / brand -->
+        <div class="navbar-brand">
+            <a class="navbar-item" href="home.html">
+                <img src="images/marvellogo.png" alt="site-logo" style="max-height: 70px" class="py-2 px-2">
+            </a>
+            <a class="navbar-burger" id="burger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </a>
+        </div>
+
+        <div class="navbar-menu" id="nav-links">
+            <div class="navbar-start">
+                <a class="navbar-item" href="home.html">
+                    Home
+                </a>
+            
+                <a class="navbar-item is-hoverable" href="app.html">
+                    App
+                </a>
+            
+                <a class="navbar-item is-hoverable has-text-weight-bold" href="favorites.html">
+                    Favorites
+                </a>
+            
+                <a class="navbar-item is-hoverable" href="documentation.html">
+                    Documentation
+                </a>
+            </div> <!-- end navbar-start -->
+        </div>
+    </nav>
+
+    <div class="column">  
+        <div class="hero is-large is-dark p-2">
+            <marvel-header></marvel-header>
+            <p>
+                *Favorites features will go here*
+            </p>
+        </div>
+        <marvel-footer data-title="Robert Reddick" data-year="2022"></marvel-footer>
+    </div>
+    
+
+
+    <script type="module" src="src/init.js"></script>
+</body>
+</html>
