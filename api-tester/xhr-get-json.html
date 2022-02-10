@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+	<title>XHR - Load JSON</title>
+	<style>
+		body{
+			font-family: sans-serif;
+		}
+	</style>
+
+</head>
+<body>
+	<h2>XHR - Load JSON</h2>
+	
+	<hr>
+	<button id="my-button">Load Data</button>
+	<div id="output">Click button to load</div>
+	
+
+<script>
+	document.querySelector("#my-button").onclick = loadJsonXHR;
+	function loadJsonXHR(){
+		const MARVEL_URL = "https://gateway.marvel.com/v1/public/characters?";
+
+		// Public API key from here: https://developer.marvel.com/docs/
+		let API_KEY = "fedefa1198cc7584d18711f16800dd54";
+		let HASH = "00eb4328a410ac808295621f8ff3986a";
+
+		// Build up our URL string
+		let url = MARVEL_URL;
+
+		// parse the user entered term we wish to search
+		//let term = document.querySelector("#searchterm").value;
+		let term = "hulk";
+		displayTerm = term;
+
+		// get rid of any leading and trailing spaces
+		term = term.trim();
+		
+		// encode spaces and special characters
+		term = encodeURIComponent(term);
+
+		// if there's no term to search then bail out of the function (return does this)
+		if(term.length < 1) 
+		{
+			document.querySelector("#output").innerHTML = "<b>No results found, please enter a search term!</b>";
+			return;
+		}
+
+		// Continue to build on URL
+		url += "name=" + term;
+		url += "&apikey=" + API_KEY;
+		url += "&hash=" + HASH;
+		url += "&ts=1";
+
+		const xhr = new XMLHttpRequest();
+		xhr.onload = (e) => {
+			console.log(`In onload - HTTP Status Code = ${e.target.status}`);
+			let json;
+			try{
+				json = JSON.parse(e.target.responseText);
+			}catch{
+				document.querySelector("#output").innerHTML = "<p>BAD JSON!</p>";
+				return;
+			}
+			let result = json.data;
+			let charData = result['results'][0];
+			let imgPath = charData.thumbnail.path + ".jpg"
+			document.querySelector("#output").innerHTML = `<img src="${imgPath}" alt="character-img">`;
+			console.log("json = ",json);
+		}
+		xhr.onerror = e => console.log(`In onerror - HTTP Status Code = ${e.target.status}`);
+		xhr.open("GET",url);
+		xhr.send();
+	}
+</script>
+</body>
+</html>
