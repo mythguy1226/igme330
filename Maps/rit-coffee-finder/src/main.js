@@ -16,7 +16,6 @@ function loadPOI()
     {
         poi = JSON.parse(jsonString);
 
-        console.log(poi);
         // Add the markers
         for(let p of poi)
         {
