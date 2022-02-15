@@ -15,15 +15,23 @@ burgerIcon.addEventListener('click', () => {
 
 // User Interface
 const searchButton = document.querySelector("#search");
+const resultsField = document.querySelector("#results");
 
 // Search button
 searchButton.onclick = () => {
-    let url = getURL();
+    let url = getURL("general");
+    searcher.loadJsonXHR(url, getCharacters);
+}
+
+// Results field
+resultsField.onchange = e => {
+    let url = getURL("specific");
     searcher.loadJsonXHR(url, loadCharacter);
 }
 
 // Function that creates the character card
 const showCharacter = charObj =>{
+    document.querySelector("#output").innerHTML = ``;
     const marvelCard = document.createElement("marvel-card");
     marvelCard.dataset.name = charObj.name ?? "No name found";
     marvelCard.dataset.description = charObj.description ?? "No description found";
@@ -34,7 +42,7 @@ const showCharacter = charObj =>{
 };
 
 // Function that gets the proper URL based on the search term
-function getURL()
+function getURL(type)
 {
     // Get the proper URL from the API
     const MARVEL_URL = "https://gateway.marvel.com/v1/public/characters?";
@@ -65,12 +73,45 @@ function getURL()
     }
 
     // Continue to build on URL
-    url += "name=" + term;
-    url += "&apikey=" + API_KEY;
-    url += "&hash=" + HASH;
-    url += "&ts=1";
+    if(type == "general")
+    {
+        url += "nameStartsWith=" + term;
+        url += "&apikey=" + API_KEY;
+        url += "&hash=" + HASH;
+        url += "&ts=1";
+        //let limit = document.querySelector("#limit").value;
+        url += "&limit=" + 10;
+    }
+    else
+    {
+        url += "name=" + document.querySelector("#results").value;
+        url += "&apikey=" + API_KEY;
+        url += "&hash=" + HASH;
+        url += "&ts=1";
+    }
 
     return url;
+}
+
+// Function for getting all of the results from the character search
+const getCharacters = json => 
+{
+    // Get all search results
+    let results = json.data;
+    let chars = results['results'];
+
+    // Init HTML string
+    let html = `<option>Select a Character</option>`;
+
+    // Iterate through and add to the HTML
+    for(let i = 0; i < chars.length; i++)
+    {
+        let char = chars[i]['name'];
+        html += `<option>${char}</option>`;
+    }
+
+    // Set the HTML
+    document.querySelector("#results").innerHTML = html;
 }
 
 // Load the character and call the card to be displayed
