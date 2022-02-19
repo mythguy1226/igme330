@@ -4,6 +4,9 @@ import "./marvel-header.js";
 import "./marvel-card.js";
 import * as searcher from "./searcher.js";
 
+// If on favorites page load the favorites
+if(document.querySelector("#favorites-list") != null)
+    loadFavorites();
 // Mobile Menu
 const burgerIcon = document.querySelector("#burger");
 const navBarMenu = document.querySelector("#nav-links");
@@ -16,18 +19,34 @@ burgerIcon.addEventListener('click', () => {
 // User Interface
 const searchButton = document.querySelector("#search");
 const resultsField = document.querySelector("#results");
+const favoriteButton = document.querySelector("#favorites");
+const clearButton = document.querySelector("#clear-favorites");
 
 // Search button
-searchButton.onclick = () => {
-    let url = getURL("general");
-    searcher.loadJsonXHR(url, getCharacters);
-}
+if(searchButton != null)
+    searchButton.onclick = () => {
+        let url = getURL("general");
+        searcher.loadJsonXHR(url, getCharacters);
+    }
 
 // Results field
-resultsField.onchange = e => {
-    let url = getURL("specific");
-    searcher.loadJsonXHR(url, loadCharacter);
-}
+if(resultsField != null)
+    resultsField.onchange = e => {
+        let url = getURL("specific");
+        searcher.loadJsonXHR(url, loadCharacter);
+    }
+
+// Favorites Button
+if(favoriteButton != null)
+    favoriteButton.onclick = e => {
+        addFavorite();
+    }
+
+// Clear button
+if(clearButton != null)
+    clearButton.onclick = e => {
+        clearFavorites();
+    }
 
 // Function that creates the character card
 const showCharacter = charObj =>{
@@ -80,7 +99,7 @@ function getURL(type)
         url += "&hash=" + HASH;
         url += "&ts=1";
         //let limit = document.querySelector("#limit").value;
-        url += "&limit=" + 10;
+        url += "&limit=" + document.querySelector("#limit").value;
     }
     else
     {
@@ -138,4 +157,87 @@ const loadCharacter = json =>
 
     // Create the character card
     showCharacter({name:name, description:description, image:imgPath, comics:comics, events:events});
+}
+
+// Add a character to the favorites list
+const addFavorite = () =>
+{
+    // Set the local storage key
+    const KEY = "rdr8959-marvel-storage";
+    //localStorage.setItem(KEY, null);
+    // Get the current object stored as JSON and parse
+    let storage = localStorage.getItem(KEY);
+    storage = JSON.parse(storage);
+
+    // Null check object
+    if(storage == null)
+        storage = {};
+
+    // Get the name being saved
+    const savedChar = document.querySelector("#output").innerHTML;
+
+    // Get favorites array from object then add the character
+    if(storage["favorites"] != null)
+    {
+        let favorites = storage["favorites"];
+        favorites.push(savedChar);
+        storage["favorites"] = favorites;
+    }
+    else
+    {
+        let favorites = [];
+        favorites.push(savedChar);
+        storage["favorites"] = favorites;
+    }
+
+    // Stringify the JSON to store
+    storage = JSON.stringify(storage);
+    localStorage.setItem(KEY, storage);
+}
+
+// Loads all characters from favorites
+function loadFavorites()
+{
+    // Set the local storage key
+    const KEY = "rdr8959-marvel-storage";
+
+    // Get the current object stored as JSON and parse
+    let storage = localStorage.getItem(KEY);
+    storage = JSON.parse(storage);
+
+    // Null check object
+    if(storage == null)
+        return;
+
+    // Get the favorites from local storage
+    let favorites = storage["favorites"];
+
+    // Get reference to favorites section
+    const favoritesSection = document.querySelector("#favorites-list");
+
+
+    // Init HTML
+    let html = ``;
+
+    // Loop through favorites and add the proper HTML
+    for(let favorite of favorites)
+    {
+        html += favorite;
+    }
+
+    // Sets the favorites section
+    favoritesSection.innerHTML = html;
+}
+
+// Clear out the favorites tab
+const clearFavorites = () =>
+{
+    // Set the local storage key
+    const KEY = "rdr8959-marvel-storage";
+
+    // Clear out the local storage
+    localStorage.setItem(KEY, null);
+
+    // Reset the HTML on the favorite's page
+    document.querySelector("#favorites-list").innerHTML = ``;
 }

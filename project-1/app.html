@@ -47,9 +47,17 @@
         <div class="hero is-large is-dark p-2">
             <marvel-header></marvel-header>
             <div class="section">
-                <input class="input" id="searchterm" type="text" size="30" maxlength="30" style="float:left;width:10%"/> <br>
+                <input value="Search Term" class="input" id="searchterm" type="text" size="30" maxlength="30" style="float:left;width:10rem"/> <br>
                 <br>
-                <button class="button" type="button" id="search" class="green">Search</button> <br>
+                <select class="select" id="limit">
+                    <option>Select a Limit</option>
+                    <option>10</option>
+                    <option>25</option>
+                    <option>50</option>
+                    <option>100</option>
+                </select>
+                <br>
+                <button class="button" type="button" id="search">Search</button> <br>
                 <select class="select" id="results">
                     <option>Select a Character</option>
                 </select>
@@ -57,6 +65,7 @@
                     
                 </div>
             </div>
+            <button class="button" type="button" id="favorites" style="width:10rem">Add to Favorites</button> <br>
         </div>
         <marvel-footer data-title="Robert Reddick" data-year="2022"></marvel-footer>
     </div>

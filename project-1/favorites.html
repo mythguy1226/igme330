@@ -6,6 +6,8 @@
   <title>Marvel Character Searcher</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="./styles/default-styles.css">
+  <script type="module" src="src/init.js"></script>
 </head>
 <body>
     <nav class="navbar has-shadow is-white">
@@ -45,15 +47,14 @@
     <div class="column">  
         <div class="hero is-large is-dark p-2">
             <marvel-header></marvel-header>
-            <p>
-                *Favorites features will go here*
-            </p>
+            <p>Favorites:</p>
+            <div id="favorites-list">
+
+            </div>
+            <hr>
+            <button class="button" id="clear-favorites" style="width:10rem;">Clear Favorites</button>
         </div>
         <marvel-footer data-title="Robert Reddick" data-year="2022"></marvel-footer>
     </div>
-    
-
-
-    <script type="module" src="src/init.js"></script>
 </body>
 </html>
