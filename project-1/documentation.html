@@ -6,6 +6,7 @@
   <title>Marvel Character Searcher</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="./styles/default-styles.css">
 </head>
 <body>
     <nav class="navbar has-shadow is-white">
@@ -46,29 +47,44 @@
         <div class="hero is-large is-dark p-2">
             <div class="hero-head">
                 <marvel-header></marvel-header>
-                <p class="section is-size-4">
-                    Link to Marvel's API Documentation: <br>
-                    <a href="https://developer.marvel.com/docs">
-                        Click Here
-                    </a>
-                </p>
-                <div class="section is-size-4">
-                    <p>
-                        Major Features:
-                    </p>
-                    <ol>
-                        <li>Character Searching</li>
-                        <li>Display Character Image</li>
-                        <li>Display Comics character featured in</li>
-                        <li>Display Events character featured in</li>
-                        <li>Place selected characters onto a team</li>
-                        <li>Display character information on a card-like web component</li>
-                    </ul>
+                <div id="subheadings" class="section">
+                    <h2 class="is-size-3">Project Requirements:</h2>
+                    <a class="is-size-4" href="https://github.com/tonethar/IGME-330-Spring-2022/blob/main/projects/p1-checkpoint-2.md">Link to Requirements</a>
+                    <h2 class="is-size-3">Resources Utilized:</h2>
+                    <a class="is-size-4" href="https://marvel.fandom.com/wiki/Category:Characters">Link to landing page image</a> <br>
+                    <a class="is-size-4" href="https://en.wikipedia.org/wiki/Marvel_Comics">Link to Marvel Logo</a>
+                    <h2 class="is-size-3">API:</h2>
+                    <a class="is-size-4" href="https://developer.marvel.com/docs">Link to API</a>
+                    <h2 class="is-size-3">Noteworthy:</h2>
+                    <h2 class="is-size-3">Grading:</h2>
+                    <h2 class="is-size-3">To-do:</h2>
                 </div>
-                <p class="section is-size-4">
-                    Interface Sketch:
-                </p>
-                <img src="images/marvelInterfaceSketch.jpg" alt="sketch">
+                <div id="proposal" class="section">
+                    <h2 class="subtitle is-size-4">Proposal:</h2>
+                    <p class="section is-size-4">
+                        Link to Marvel's API Documentation: <br>
+                        <a href="https://developer.marvel.com/docs">
+                            Click Here
+                        </a>
+                    </p>
+                    <div class="section is-size-4">
+                        <p>
+                            Major Features:
+                        </p>
+                        <ol>
+                            <li>Character Searching</li>
+                            <li>Display Character Image</li>
+                            <li>Display Comics character featured in</li>
+                            <li>Display Events character featured in</li>
+                            <li>Place selected characters onto a team</li>
+                            <li>Display character information on a card-like web component</li>
+                        </ul>
+                    </div>
+                    <p class="section is-size-4">
+                        Interface Sketch:
+                    </p>
+                    <img src="images/marvelInterfaceSketch.jpg" alt="sketch">
+                </div>
             </div>
         </div>
         <marvel-footer data-title="Robert Reddick" data-year="2022"></marvel-footer>
