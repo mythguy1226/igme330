@@ -46,26 +46,39 @@
     <div class="column">  
         <div class="hero is-large is-dark p-2">
             <marvel-header></marvel-header>
-            <div class="section">
-                <input value="Search Term" class="input" id="searchterm" type="text" size="30" maxlength="30" style="float:left;width:10rem"/> <br>
-                <br>
-                <select class="select" id="limit">
-                    <option>Select a Limit</option>
-                    <option>10</option>
-                    <option>25</option>
-                    <option>50</option>
-                    <option>100</option>
-                </select>
-                <br>
-                <button class="button" type="button" id="search">Search</button> <br>
-                <select class="select" id="results">
-                    <option>Select a Character</option>
-                </select>
-                <div id="output">
-                    
+            <div class="tile is-ancestor">
+                <div class="tile is-vertical is-8">
+                    <div class="tile">
+                        <div class="tile is-vertical is-parent">
+                            <div class="tile is-child">
+                                <input value="Search Term" class="input" id="searchterm" type="text" size="30" maxlength="30" style="float:left;width:10rem"/> <br>
+                                <br>
+                                <select class="select" id="limit">
+                                    <option>Select a Limit</option>
+                                    <option>10</option>
+                                    <option>25</option>
+                                    <option>50</option>
+                                    <option>100</option>
+                                </select>
+                                <br>
+                                <button class="button" type="button" id="search">Search</button> <br>
+                                <select class="select" id="results">
+                                    <option>Select a Character</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="tile is-vertical is-parent">
+                            <div class="tile is-child">
+                                <div id="output">
+                            
+                                </div>
+                                <button class="button" type="button" id="favorites" style="width:10rem">Add to Favorites</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <button class="button" type="button" id="favorites" style="width:10rem">Add to Favorites</button> <br>
+            
         </div>
         <marvel-footer data-title="Robert Reddick" data-year="2022"></marvel-footer>
     </div>
