@@ -47,12 +47,29 @@
     <div class="column">  
         <div class="hero is-large is-dark p-2">
             <marvel-header></marvel-header>
-            <p>Favorites:</p>
-            <div id="favorites-list">
+            <div class="tile is-ancestor">
+                <div class="tile is-vertical is-8">
+                    <div class="tile">
+                        <div class="tile is-vertical is-parent">
+                            <div class="tile is-child">
+                                <p>Favorites:</p>
+                                <div id="favorites-list">
 
+                                </div>
+                                <hr>
+                                <button class="button" id="clear-favorites" style="width:10rem;">Clear Favorites</button>
+                            </div>
+                        </div>
+                        <div class="tile is-vertical is-parent">
+                            <div class="tile is-child">
+                                <div id="community-favorites">
+                                    <p>Community Favorites:</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <hr>
-            <button class="button" id="clear-favorites" style="width:10rem;">Clear Favorites</button>
         </div>
         <marvel-footer data-title="Robert Reddick" data-year="2022"></marvel-footer>
     </div>

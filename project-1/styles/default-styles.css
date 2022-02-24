@@ -11,3 +11,8 @@
 #subheadings a:hover {
   color: hsl(204, 86%, 53%);
 }
+body {
+  background-image: url("../images/marvelBackground.jpg");
+  background-size: cover;
+  background-position: center;
+}

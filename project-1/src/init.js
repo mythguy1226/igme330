@@ -4,6 +4,49 @@ import "./marvel-header.js";
 import "./marvel-card.js";
 import * as searcher from "./searcher.js";
 
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-app.js";
+import { getDatabase, ref, set, push, onValue } from  "https://www.gstatic.com/firebasejs/9.6.7/firebase-database.js";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+    apiKey: "AIzaSyA7WCZJYRGsrkuFJUouHxNF7NPILWkS9Es",
+    authDomain: "marvel-searcher.firebaseapp.com",
+    projectId: "marvel-searcher",
+    storageBucket: "marvel-searcher.appspot.com",
+    messagingSenderId: "562666080460",
+    appId: "1:562666080460:web:506d574f3fed6809025a69"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+console.log(app);
+
+const writeUserData = (userId, name, email) => {
+const db = getDatabase();
+set(ref(db, "users/" + userId), {
+    username: name,
+    email: email
+    });
+};
+
+writeUserData("abc1234","Mythical","myth@rit.edu");
+writeUserData("yeet567","Yeeeet","yert@yahoo.com");
+const reference = ref(getDatabase(), "users");
+console.log(reference);
+function dataChanged(snapshot){
+    snapshot.forEach(data => {
+        const childKey = data.key;
+        const childData = data.val();
+        console.log(childData);
+    });
+}
+onValue(reference,dataChanged);
+
+
+
 // If on favorites page load the favorites
 if(document.querySelector("#favorites-list") != null)
     loadFavorites();
