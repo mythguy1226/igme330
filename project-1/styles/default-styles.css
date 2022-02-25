@@ -16,3 +16,35 @@ body {
   background-size: cover;
   background-position: center;
 }
+
+#team {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.button
+{
+  background-color: #1f4cb5;
+  color: #90aae8;
+}
+.button:hover
+{
+  background-color: #577fde;
+  color: #153ea1;
+}
+
+#controls
+{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.input
+{
+  border-color: #108be3;
+  border-width: 3px;
+  border-style: solid;
+}

@@ -62,7 +62,7 @@ burgerIcon.addEventListener('click', () => {
 // User Interface
 const searchButton = document.querySelector("#search");
 const resultsField = document.querySelector("#results");
-const favoriteButton = document.querySelector("#favorites");
+//const favoriteButton = document.querySelector(".favorite");
 const clearButton = document.querySelector("#clear-favorites");
 
 // Search button
@@ -80,10 +80,11 @@ if(resultsField != null)
     }
 
 // Favorites Button
-if(favoriteButton != null)
-    favoriteButton.onclick = e => {
-        addFavorite();
-    }
+// if(favoriteButton != null)
+//     favoriteButton.onclick = e => {
+//         addFavorite();
+//         addCloudTeam();
+//     }
 
 // Clear button
 if(clearButton != null)
@@ -202,41 +203,6 @@ const loadCharacter = json =>
     showCharacter({name:name, description:description, image:imgPath, comics:comics, events:events});
 }
 
-// Add a character to the favorites list
-const addFavorite = () =>
-{
-    // Set the local storage key
-    const KEY = "rdr8959-marvel-storage";
-    //localStorage.setItem(KEY, null);
-    // Get the current object stored as JSON and parse
-    let storage = localStorage.getItem(KEY);
-    storage = JSON.parse(storage);
-
-    // Null check object
-    if(storage == null)
-        storage = {};
-
-    // Get the name being saved
-    const savedChar = document.querySelector("#output").innerHTML;
-
-    // Get favorites array from object then add the character
-    if(storage["favorites"] != null)
-    {
-        let favorites = storage["favorites"];
-        favorites.push(savedChar);
-        storage["favorites"] = favorites;
-    }
-    else
-    {
-        let favorites = [];
-        favorites.push(savedChar);
-        storage["favorites"] = favorites;
-    }
-
-    // Stringify the JSON to store
-    storage = JSON.stringify(storage);
-    localStorage.setItem(KEY, storage);
-}
 
 // Loads all characters from favorites
 function loadFavorites()
@@ -283,4 +249,26 @@ const clearFavorites = () =>
 
     // Reset the HTML on the favorite's page
     document.querySelector("#favorites-list").innerHTML = ``;
+}
+
+// Method that adds a character to the user's team
+const addTeamMember = () =>
+{
+
+}
+
+// Add a character team to the community favorites list
+const addCloudTeam = () =>
+{
+    // Get the name being saved
+    const savedChar = document.querySelector("#output").firstChild;
+
+    // Convert HTML card into a character object
+    const char = {
+        "name": savedChar.dataset.name,
+        "description": savedChar.dataset.description,
+        "image": savedChar.dataset.image,
+        "comics": savedChar.dataset.comics,
+        "events": savedChar.dataset.events
+    }
 }

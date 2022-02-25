@@ -1,45 +1,27 @@
 const template = document.createElement("template");
 template.innerHTML = `
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
     <style>
       div
       {
-        height: 340px;
-        width: 170px;
-        border: 1px solid gray;
-        padding: .5rem;
         background-color: #f4f4f4;
-        overflow: scroll;
-        font-size: .7rem;
-        position: relative;
       }
-      
-      h2
+      .card
       {
-        font-size: 1.1rem;
-        letter-spacing: .67px;
-        line-height: 1.2;
-        margin-top: 0;
-        color: #000;
+        margin-top: 2rem;
       }
-      
+      .content
+      {
+        overflow: scroll;
+        max-height: 10rem;
+      }
       button
       {
-        border-radius: 1px;
-        padding: 2px;
-        position: absolute;
-        top: 1px;
-        right: 1px;
-        opacity: 0.2;
+        margin: 10px 10px;
       }
-
-      button:hover
+      .class
       {
-          opacity: 1;
-      }
-
-      img
-      {
-        width: 100px;
+        margin: 10px 10px;
       }
 
       p
@@ -53,15 +35,30 @@ template.innerHTML = `
       }
 
     </style>
-    <div>
-        <h2></h2>
-        <button>X</button>
-        <img alt="char-image">
-        <p id="mc-description">Description: </p>
-        <p>Comics: </p>
-        <ul id="mc-comics"></ul>
-        <p>Events: </p>
-        <ul id="mc-events"></ul>
+    <div class="card">
+      <div class="card-header">
+        <button class="button is-warning favorite">Favorite</button>
+        <button class="button is-danger delete-button">X</button>
+      </div>
+      <div class="card-image">
+        <figure class="image is-4by3">
+          <img alt="char-image">
+        </figure>
+      </div>
+      <div class="card-content">
+        <div class="media">
+          <div class="media-content">
+            <h2 class="title is-4"></h2>
+            <p id="mc-description" class="subtitle is-6">Description: </p>
+          </div>
+        </div>
+        <div class="content">
+            <p>Comics: </p>
+            <ul id="mc-comics"></ul>
+            <p>Events: </p>
+            <ul id="mc-events"></ul>
+        </div>
+      </div>
     </div>
   `;
 
@@ -83,14 +80,27 @@ template.innerHTML = `
         this.p1 = this.shadowRoot.querySelector("#mc-description");
         this.ul1 = this.shadowRoot.querySelector("#mc-comics");
         this.ul2 = this.shadowRoot.querySelector("#mc-events");
-        this.button = this.shadowRoot.querySelector("button");
+        this.favorite = this.shadowRoot.querySelector(".favorite");
+        this.delete = this.shadowRoot.querySelector(".delete-button");
     }
 
     // Event handler method
     connectedCallback()
     {
         // Click Event Handler
-        this.button.onclick = () => this.remove();
+        this.delete.onclick = () => {
+          deleteFavorite(this.h2.textContent);
+          const clearButton = document.querySelector("#clear-favorites");
+          if(clearButton != null)
+          {
+            this.remove();
+          }
+        }
+        this.favorite.onclick = () => {
+          this.favorite.disabled = true;
+          this.favorite.textContent = "Favorited!";
+          addFavorite();
+        }
 
         // Render element
         this.render();
@@ -99,7 +109,8 @@ template.innerHTML = `
     // Clean up method
     disconnectedCallback()
     {
-        this.button.onclick = null;
+        this.favorite.onclick = null;
+        this.delete.onclick = null;
     }
 
     // Method for handling attribute changes
@@ -120,8 +131,8 @@ template.innerHTML = `
     render()
     {
         // Get the different attributes
-        const name = this.getAttribute('data-name') ? this.getAttribute('data-name') : "<i>...character name...</i>";
-        const description = this.getAttribute('data-description') ? this.getAttribute('data-description') : "<i>...character description...</i>";
+        const name = this.getAttribute('data-name') ? this.getAttribute('data-name') : "<i>Empty Character Slot</i>";
+        const description = this.getAttribute('data-description') ? this.getAttribute('data-description') : "<i>No Description</i>";
         const imageUrl = this.getAttribute('data-image') ? this.getAttribute('data-image') : "images/catimage-no-image.png";
         const comics = this.getAttribute('data-comics') ? this.getAttribute('data-comics') : "None";
         const events = this.getAttribute('data-events') ? this.getAttribute('data-events') : "None";
@@ -157,3 +168,98 @@ template.innerHTML = `
 }
 
 customElements.define('marvel-card', MarvelCard);
+
+// Add a character to the favorites list
+const addFavorite = () =>
+{
+    // Set the local storage key
+    const KEY = "rdr8959-marvel-storage";
+    //localStorage.setItem(KEY, null);
+    // Get the current object stored as JSON and parse
+    let storage = localStorage.getItem(KEY);
+    storage = JSON.parse(storage);
+
+    // Null check object
+    if(storage == null)
+        storage = {};
+
+    // Get the name being saved
+    const savedChar = document.querySelector("#output").innerHTML;
+
+    // No saving the default card!
+    if(savedChar == "\n <marvel-card></marvel-card>\n ")
+      return;
+
+    // Get favorites array from object then add the character
+    if(storage["favorites"] != null)
+    {
+        let favorites = storage["favorites"];
+        if(!favorites.includes(savedChar))
+        {
+          favorites.push(savedChar);
+          storage["favorites"] = favorites;
+        }
+    }
+    else
+    {
+        let favorites = [];
+        favorites.push(savedChar);
+        storage["favorites"] = favorites;
+    }
+
+    // Stringify the JSON to store
+    storage = JSON.stringify(storage);
+    localStorage.setItem(KEY, storage);
+}
+
+// Add a character to the favorites list
+const deleteFavorite = (name) =>
+{
+    // This button's existence is the indicator for which action to take
+    const clearButton = document.querySelector("#clear-favorites");
+
+    if(clearButton != null) // This is for the favorites page to remove from list
+    {
+      // Set the local storage key
+      const KEY = "rdr8959-marvel-storage";
+
+      //Get the current object stored as JSON and parse
+      let storage = localStorage.getItem(KEY);
+      storage = JSON.parse(storage);
+
+      // Null check object
+      if(storage == null)
+          storage = {};
+
+      // Get favorites array from object then remove the character
+      if(storage["favorites"] != null)
+      {
+          // Iterate through favorites to find the index
+          let favorites = storage["favorites"];
+          let index = 0;
+          for(let favorite of favorites)
+          {
+            // Use string literals to find the correct character
+            if(favorite.includes(`data-name="${name}"`))
+            {
+              index = favorites.indexOf(favorite);
+
+              // Remove the favorite from the list
+              if (index > -1) 
+              {
+                favorites.splice(index, 1);
+              }
+              storage["favorites"] = favorites;
+            }
+          }
+      }
+
+      // Stringify the JSON to store
+      storage = JSON.stringify(storage);
+      localStorage.setItem(KEY, storage);
+    }
+    else // This is for the app page button to reset the slots to normal
+    {
+      document.querySelector("#output").innerHTML = `<marvel-card></marvel-card>`;
+    }
+}
