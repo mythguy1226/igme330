@@ -53,7 +53,7 @@ class MarvelFooter extends HTMLElement{
   // Method for handling attribute changes
   attributeChangedCallback(attributeName, oldVal, newVal) 
   {
-    console.log(attributeName,oldVal,newVal);
+    //console.log(attributeName,oldVal,newVal);
     this.render();
   }
 } 

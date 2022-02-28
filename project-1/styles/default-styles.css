@@ -22,6 +22,8 @@ body {
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-around;
+  padding-right: 10rem;
+  padding-left: 10rem;
 }
 
 .button

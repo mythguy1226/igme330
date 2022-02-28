@@ -116,7 +116,7 @@ template.innerHTML = `
     // Method for handling attribute changes
     attributeChangedCallback(attributeName, oldVal, newVal)
     {
-        console.log(attributeName,oldVal,newVal);
+        //console.log(attributeName,oldVal,newVal);
         this.render();
     }
 
@@ -164,6 +164,14 @@ template.innerHTML = `
 
         // Update image
         this.image.src = imageUrl;
+
+        // Check if in favorites already
+        if(checkInFavorites(this.h2.textContent))
+        {
+          this.favorite.disabled = true;
+          this.favorite.textContent = "Favorited!";
+          addFavorite();
+        }
     }
 }
 
@@ -182,6 +190,8 @@ const addFavorite = () =>
     // Null check object
     if(storage == null)
         storage = {};
+    if(document.querySelector("#output") == null)
+      return;
 
     // Get the name being saved
     const savedChar = document.querySelector("#output").innerHTML;
@@ -189,7 +199,7 @@ const addFavorite = () =>
     // No saving the default card!
     if(savedChar == "\n <marvel-card></marvel-card>\n ")
       return;
-
+    
     // Get favorites array from object then add the character
     if(storage["favorites"] != null)
     {
@@ -262,4 +272,35 @@ const deleteFavorite = (name) =>
     {
       document.querySelector("#output").innerHTML = `<marvel-card></marvel-card>`;
     }
+}
+
+// Method that checks favorites list for name given
+function checkInFavorites(name) 
+{
+  // Set the local storage key
+  const KEY = "rdr8959-marvel-storage";
+
+  //Get the current object stored as JSON and parse
+  let storage = localStorage.getItem(KEY);
+  storage = JSON.parse(storage);
+
+  // Null check object
+  if(storage == null)
+      storage = {};
+
+  // Get favorites array from object then remove the character
+  if(storage["favorites"] != null)
+  {
+      // Iterate through favorites to find the index
+      let favorites = storage["favorites"];
+      for(let favorite of favorites)
+      {
+        // Use string literals to find the correct character
+        if(favorite.includes(`data-name="${name}"`))
+        {
+          return true;
+        }
+      }
+  }
+  return false;
 }

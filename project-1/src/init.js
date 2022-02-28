@@ -2,6 +2,7 @@
 import "./marvel-footer.js";
 import "./marvel-header.js";
 import "./marvel-card.js";
+import "./app-navbar.js";
 import * as searcher from "./searcher.js";
 
 // Import the functions you need from the SDKs you need
@@ -40,57 +41,81 @@ function dataChanged(snapshot){
     snapshot.forEach(data => {
         const childKey = data.key;
         const childData = data.val();
-        console.log(childData);
+        //console.log(childData);
     });
 }
 onValue(reference,dataChanged);
 
 
-
 // If on favorites page load the favorites
 if(document.querySelector("#favorites-list") != null)
+{
     loadFavorites();
-// Mobile Menu
-const burgerIcon = document.querySelector("#burger");
-const navBarMenu = document.querySelector("#nav-links");
+}
+else if(document.querySelector("#search") != null)// If on app page load the UI
+{
+    loadUI();
+}
 
-// Toggle dropdown menu
-burgerIcon.addEventListener('click', () => {
-    navBarMenu.classList.toggle('is-active');
-});
 
 // User Interface
 const searchButton = document.querySelector("#search");
 const resultsField = document.querySelector("#results");
-//const favoriteButton = document.querySelector(".favorite");
 const clearButton = document.querySelector("#clear-favorites");
+const limit = document.querySelector("#limit");
 
 // Search button
 if(searchButton != null)
+{
     searchButton.onclick = () => {
         let url = getURL("general");
-        searcher.loadJsonXHR(url, getCharacters);
-    }
+        searcher.loadJsonFetch(url, getCharacters);
+    }   
+}       
 
 // Results field
 if(resultsField != null)
+{
     resultsField.onchange = e => {
         let url = getURL("specific");
-        searcher.loadJsonXHR(url, loadCharacter);
+        searcher.loadJsonFetch(url, loadCharacter);
     }
-
-// Favorites Button
-// if(favoriteButton != null)
-//     favoriteButton.onclick = e => {
-//         addFavorite();
-//         addCloudTeam();
-//     }
+}
 
 // Clear button
 if(clearButton != null)
+{
     clearButton.onclick = e => {
         clearFavorites();
     }
+}
+
+// Limit selector
+if(limit != null)
+{
+    limit.onchange = e => {
+        // ****** Save UI state ******
+        // Set the local storage key
+        const KEY = "rdr8959-marvel-storage";
+
+        // Get the current object stored as JSON and parse
+        let storage = localStorage.getItem(KEY);
+        storage = JSON.parse(storage);
+        if(storage == null)
+        {
+            storage = {};
+            storage["limit"] = document.querySelector("#limit").value;
+        }
+        else
+        {
+            storage["limit"] = document.querySelector("#limit").value;
+        }
+
+        // Stringify the JSON to store
+        storage = JSON.stringify(storage);
+        localStorage.setItem(KEY, storage);
+    }
+}
 
 // Function that creates the character card
 const showCharacter = charObj =>{
@@ -102,6 +127,29 @@ const showCharacter = charObj =>{
     marvelCard.dataset.comics = charObj.comics ?? "None";
     marvelCard.dataset.events = charObj.events ?? "None";
     document.querySelector("#output").appendChild(marvelCard);
+
+    // ****** Save UI state ******
+    // Set the local storage key
+    const KEY = "rdr8959-marvel-storage";
+
+    // Get the current object stored as JSON and parse
+    let storage = localStorage.getItem(KEY);
+    storage = JSON.parse(storage);
+
+    // Store the active card
+    if(storage == null)
+    {
+        storage = {};
+        storage["output"] = document.querySelector("#output").innerHTML;
+    }
+    else
+    {
+        storage["output"] = document.querySelector("#output").innerHTML;
+    }
+
+    // Stringify the JSON to store
+    storage = JSON.stringify(storage);
+    localStorage.setItem(KEY, storage);
 };
 
 // Function that gets the proper URL based on the search term
@@ -175,6 +223,29 @@ const getCharacters = json =>
 
     // Set the HTML
     document.querySelector("#results").innerHTML = html;
+
+    // ****** Save UI state ******
+    // Set the local storage key
+    const KEY = "rdr8959-marvel-storage";
+
+    // Get the current object stored as JSON and parse
+    let storage = localStorage.getItem(KEY);
+    storage = JSON.parse(storage);
+    if(storage == null)
+    {
+        storage = {};
+        storage["search-term"] = document.querySelector("#searchterm").value;
+        storage["results"] = document.querySelector("#results").innerHTML;
+    }
+    else
+    {
+        storage["search-term"] = document.querySelector("#searchterm").value;
+        storage["results"] = document.querySelector("#results").innerHTML;
+    }
+
+    // Stringify the JSON to store
+    storage = JSON.stringify(storage);
+    localStorage.setItem(KEY, storage);
 }
 
 // Load the character and call the card to be displayed
@@ -244,21 +315,32 @@ const clearFavorites = () =>
     // Set the local storage key
     const KEY = "rdr8959-marvel-storage";
 
-    // Clear out the local storage
-    localStorage.setItem(KEY, null);
+    // Get the current object stored as JSON and parse
+    let storage = localStorage.getItem(KEY);
+    storage = JSON.parse(storage);
+
+    // Null check object
+    if(storage == null)
+        return;
+
+    // Get the favorites from local storage
+    let favorites = storage["favorites"];
+
+    // Clear favorites if they exist
+    if(favorites != null)
+    {
+        storage["favorites"] = null;
+        // Clear out the local storage
+        storage = JSON.stringify(storage);
+        localStorage.setItem(KEY, storage);
+    }
 
     // Reset the HTML on the favorite's page
     document.querySelector("#favorites-list").innerHTML = ``;
 }
 
-// Method that adds a character to the user's team
-const addTeamMember = () =>
-{
-
-}
-
 // Add a character team to the community favorites list
-const addCloudTeam = () =>
+const addCloudFavorite = () =>
 {
     // Get the name being saved
     const savedChar = document.querySelector("#output").firstChild;
@@ -270,5 +352,29 @@ const addCloudTeam = () =>
         "image": savedChar.dataset.image,
         "comics": savedChar.dataset.comics,
         "events": savedChar.dataset.events
+    }
+}
+
+// Method that loads in all UI states from local storage
+function loadUI()
+{
+    // ****** Load/Set UI state ******
+    // Set the local storage key
+    const KEY = "rdr8959-marvel-storage";
+
+    // Get the current object stored as JSON and parse
+    let storage = localStorage.getItem(KEY);
+    storage = JSON.parse(storage);
+    if(storage != null) // Null Check
+    {
+        // Go through each UI piece and set its value as stored in localStorage
+        if(storage["search-term"] != null) // Null Check
+            document.querySelector("#searchterm").value = storage["search-term"];
+        if(storage["limit"] != null) // Null Check
+            document.querySelector("#limit").value = storage["limit"];
+        if(storage["results"] != null) // Null Check
+            document.querySelector("#results").innerHTML = storage["results"];
+        if(storage["output"] != null) // Null Check
+            document.querySelector("#output").innerHTML = storage["output"];
     }
 }

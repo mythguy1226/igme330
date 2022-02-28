@@ -10,39 +10,7 @@
   <script type="module" src="src/init.js"></script>
 </head>
 <body>
-    <nav class="navbar has-shadow is-white">
-        <!-- logo / brand -->
-        <div class="navbar-brand">
-            <a class="navbar-item" href="home.html">
-                <img src="images/marvellogo.png" alt="site-logo" style="max-height: 70px" class="py-2 px-2">
-            </a>
-            <a class="navbar-burger" id="burger">
-                <span></span>
-                <span></span>
-                <span></span>
-            </a>
-        </div>
-
-        <div class="navbar-menu" id="nav-links">
-            <div class="navbar-start">
-                <a class="navbar-item" href="home.html">
-                    Home
-                </a>
-            
-                <a class="navbar-item is-hoverable" href="app.html">
-                    App
-                </a>
-            
-                <a class="navbar-item is-hoverable has-text-weight-bold" href="favorites.html">
-                    Favorites
-                </a>
-            
-                <a class="navbar-item is-hoverable" href="documentation.html">
-                    Documentation
-                </a>
-            </div> <!-- end navbar-start -->
-        </div>
-    </nav>
+    <app-navbar data-page="favorites"></app-navbar>
 
     <div class="column">  
         <div class="hero is-large is-dark p-2">
@@ -52,7 +20,7 @@
                     <div class="tile">
                         <div class="tile is-vertical is-parent">
                             <div class="tile is-child">
-                                <p>Favorites:</p>
+                                <h2 class="title is-4">Favorites:</h2>
                                 <div id="favorites-list">
 
                                 </div>
@@ -63,7 +31,7 @@
                         <div class="tile is-vertical is-parent">
                             <div class="tile is-child">
                                 <div id="community-favorites">
-                                    <p>Community Favorites:</p>
+                                    <h2 class="title is-4">Community Favorites:</h2>
                                 </div>
                             </div>
                         </div>
