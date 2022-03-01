@@ -25,27 +25,50 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 console.log(app);
 
-const writeUserData = (userId, name, email) => {
-const db = getDatabase();
-set(ref(db, "users/" + userId), {
-    username: name,
-    email: email
+// Write Character Data to the cloud
+// const writeCharCloudData = (name, description, image, comics, events) => {
+//     const db = getDatabase();
+//     const charsRef = ref(db, "favorites");
+//     const newCharsRef = push(charsRef,{
+//         name,
+//         description,
+//         image,
+//         comics,
+//         events
+//     });
+// }
+function writeCharCloudData(name, description, image, comics, events) 
+{
+    const db = getDatabase();
+    set(ref(db, 'favorites/' + name), {
+        name,
+        description,
+        image,
+        comics,
+        events
     });
-};
+}
 
-writeUserData("abc1234","Mythical","myth@rit.edu");
-writeUserData("yeet567","Yeeeet","yert@yahoo.com");
-const reference = ref(getDatabase(), "users");
-console.log(reference);
+const reference = ref(getDatabase(), "favorites");
 function dataChanged(snapshot){
     snapshot.forEach(data => {
-        const childKey = data.key;
         const childData = data.val();
-        //console.log(childData);
+        console.log(childData);
+        const communitySection = document.querySelector("#community-list");
+        if(communitySection != null)
+        {
+            const marvelCard = document.createElement("marvel-card");
+            marvelCard.dataset.name = childData.name ?? "No name found";
+            marvelCard.dataset.description = childData.description ?? "No description found";
+            marvelCard.dataset.image = childData.image ?? "";
+            marvelCard.dataset.comics = childData.comics ?? "None";
+            marvelCard.dataset.events = childData.events ?? "None";
+            marvelCard.dataset.community = true;
+            communitySection.appendChild(marvelCard);
+        }
     });
 }
 onValue(reference,dataChanged);
-
 
 // If on favorites page load the favorites
 if(document.querySelector("#favorites-list") != null)
@@ -70,6 +93,7 @@ if(searchButton != null)
     searchButton.onclick = () => {
         let url = getURL("general");
         searcher.loadJsonFetch(url, getCharacters);
+        document.querySelector("#search").classList.add("is-loading");
     }   
 }       
 
@@ -246,6 +270,8 @@ const getCharacters = json =>
     // Stringify the JSON to store
     storage = JSON.stringify(storage);
     localStorage.setItem(KEY, storage);
+
+    document.querySelector("#search").classList.remove("is-loading");
 }
 
 // Load the character and call the card to be displayed
@@ -295,18 +321,21 @@ function loadFavorites()
     // Get reference to favorites section
     const favoritesSection = document.querySelector("#favorites-list");
 
-
-    // Init HTML
-    let html = ``;
-
-    // Loop through favorites and add the proper HTML
-    for(let favorite of favorites)
+    // Null Check Favorites
+    if(favorites != null)
     {
-        html += favorite;
-    }
+        // Init HTML
+        let html = ``;
 
-    // Sets the favorites section
-    favoritesSection.innerHTML = html;
+        // Loop through favorites and add the proper HTML
+        for(let favorite of favorites)
+        {
+            html += favorite;
+        }
+
+        // Sets the favorites section
+        favoritesSection.innerHTML = html;
+    }
 }
 
 // Clear out the favorites tab
@@ -353,6 +382,9 @@ const addCloudFavorite = () =>
         "comics": savedChar.dataset.comics,
         "events": savedChar.dataset.events
     }
+
+    // Write to the cloud
+    writeCharCloudData(char.name, char.description, char.image, char.comics, char.events);
 }
 
 // Method that loads in all UI states from local storage
@@ -378,3 +410,5 @@ function loadUI()
             document.querySelector("#output").innerHTML = storage["output"];
     }
 }
+
+export {addCloudFavorite};

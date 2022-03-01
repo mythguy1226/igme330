@@ -1,3 +1,4 @@
+import { addCloudFavorite } from "./init.js";
 const template = document.createElement("template");
 template.innerHTML = `
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
@@ -97,9 +98,19 @@ template.innerHTML = `
           }
         }
         this.favorite.onclick = () => {
-          this.favorite.disabled = true;
-          this.favorite.textContent = "Favorited!";
-          addFavorite();
+          // Add if not default
+          if(this.dataset.name != null)
+          {
+            this.favorite.disabled = true;
+            this.favorite.textContent = "Favorited!";
+            addFavorite();
+          }
+          else // Fail gracefully and notify user that you can't save default 
+          {
+            this.favorite.classList.remove("is-warning");
+            this.favorite.classList.add("is-danger");
+            this.favorite.innerHTML = "Can't save empy slot!"
+          }
         }
 
         // Render element
@@ -172,6 +183,15 @@ template.innerHTML = `
           this.favorite.textContent = "Favorited!";
           addFavorite();
         }
+
+        // Check if a community favorite
+        if(this.dataset.community != null)
+        {
+          // Remove all buttons from the list
+          let buttons = this.shadowRoot.querySelectorAll("button");
+          this.shadowRoot.querySelector(".card-header").removeChild(buttons[0]);
+          this.shadowRoot.querySelector(".card-header").removeChild(buttons[1]);
+        }
     }
 }
 
@@ -195,10 +215,6 @@ const addFavorite = () =>
 
     // Get the name being saved
     const savedChar = document.querySelector("#output").innerHTML;
-
-    // No saving the default card!
-    if(savedChar == "\n <marvel-card></marvel-card>\n ")
-      return;
     
     // Get favorites array from object then add the character
     if(storage["favorites"] != null)
@@ -220,6 +236,9 @@ const addFavorite = () =>
     // Stringify the JSON to store
     storage = JSON.stringify(storage);
     localStorage.setItem(KEY, storage);
+
+    // Add to the cloud
+    addCloudFavorite();
 }
 
 // Add a character to the favorites list
