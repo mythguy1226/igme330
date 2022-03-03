@@ -4,6 +4,12 @@
   flex-direction: row;
   flex-wrap: wrap;
 }
+#community-list
+{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
 
 #subheadings a {
   color: hsl(217, 71%, 53%);
@@ -49,4 +55,23 @@ body {
   border-color: #108be3;
   border-width: 3px;
   border-style: solid;
+}
+
+#results-location
+{
+  overflow: scroll;
+  max-height: 20rem;
+  color: #000000;
+  background-color: #ffffff;
+}
+
+#results li:hover
+{
+  background-color: #577fde;
+  color: #153ea1;
+}
+
+#results li
+{
+  user-select: none;
 }

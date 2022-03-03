@@ -14,7 +14,7 @@
 
     <div class="column">  
         <div class="hero is-large is-dark p-2">
-            <marvel-header></marvel-header>
+            <marvel-header data-title="Marvel Character Searcher"></marvel-header>
             <div class="tile is-ancestor">
                 <div class="tile is-vertical is-12">
                     <div class="tile">
@@ -36,9 +36,16 @@
                                     <br>
                                     <button class="button" type="button" id="search">Search</button> <br>
                                     <h2 class="title is-6">Results:</h2>
-                                    <select class="select" id="results">
+                                    <!-- <select class="select" id="results">
                                         <option>Select a Character</option>
-                                    </select>
+                                    </select> -->
+                                    <p id="selected-character">No Character Selected</p>
+                                    <div id="results-location">
+                                        <p class="has-text-weight-bold">Select a Character:</p>
+                                        <ul id="results">
+
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                         </div>

@@ -3,13 +3,11 @@ const template = document.createElement("template");
 template.innerHTML = `
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
     <style>
-      div
-      {
-        background-color: #f4f4f4;
-      }
       .card
       {
-        margin-top: 2rem;
+        margin: 2rem;
+        max-width: 40rem;
+        min-width: 40rem;
       }
       .content
       {

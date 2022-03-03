@@ -8,7 +8,7 @@ template.innerHTML = `
     }
   </style>
   <header class="hero is-large is-dark p-2">
-    <h1 class="title">Marvel Character Searcher</h1>
+    <h1 class="title"></h1>
     <h2 class="subtitle">Your go-to page to explore the marvel universe!</h2>
   </header>
 `;
@@ -22,6 +22,32 @@ class MarvelHeader extends HTMLElement
       super();
       this.attachShadow({mode: "open"});
       this.shadowRoot.appendChild(template.content.cloneNode(true));
+    }
+
+    // Event Handler
+    connectedCallback()
+    {
+      this.render();
+    }
+
+    // Method for rendering the instance
+    render()
+    {
+      const title = this.dataset.title ? this.dataset.title : "No Title Given";
+      this.shadowRoot.querySelector("h1").innerHTML = `${title}`;
+    }
+
+    // Watches attribute changes and returns them
+    static get observedAttributes()
+    {
+      return ["data-title"];
+    }
+
+    // Method for handling attribute changes
+    attributeChangedCallback(attributeName, oldVal, newVal) 
+    {
+      //console.log(attributeName,oldVal,newVal);
+      this.render();
     }
 } 
 

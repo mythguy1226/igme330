@@ -33,6 +33,10 @@ template.innerHTML = `
             <a id="favorites" class="navbar-item is-hoverable" href="favorites.html">
                 Favorites
             </a>
+
+            <a id="community" class="navbar-item is-hoverable" href="community.html">
+                Community
+            </a>
         
             <a id="documentation" class="navbar-item is-hoverable" href="documentation.html">
                 Documentation
@@ -85,6 +89,9 @@ class AppNavbar extends HTMLElement
                 break;
             case "favorites": 
             this.shadowRoot.querySelector("#favorites").style.fontWeight = "bold";
+                break;
+            case "community": 
+            this.shadowRoot.querySelector("#community").style.fontWeight = "bold";
                 break;
             case "documentation": 
             this.shadowRoot.querySelector("#documentation").style.fontWeight = "bold";

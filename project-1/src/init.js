@@ -4,71 +4,7 @@ import "./marvel-header.js";
 import "./marvel-card.js";
 import "./app-navbar.js";
 import * as searcher from "./searcher.js";
-
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-app.js";
-import { getDatabase, ref, set, push, onValue } from  "https://www.gstatic.com/firebasejs/9.6.7/firebase-database.js";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-const firebaseConfig = {
-    apiKey: "AIzaSyA7WCZJYRGsrkuFJUouHxNF7NPILWkS9Es",
-    authDomain: "marvel-searcher.firebaseapp.com",
-    projectId: "marvel-searcher",
-    storageBucket: "marvel-searcher.appspot.com",
-    messagingSenderId: "562666080460",
-    appId: "1:562666080460:web:506d574f3fed6809025a69"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-console.log(app);
-
-// Write Character Data to the cloud
-// const writeCharCloudData = (name, description, image, comics, events) => {
-//     const db = getDatabase();
-//     const charsRef = ref(db, "favorites");
-//     const newCharsRef = push(charsRef,{
-//         name,
-//         description,
-//         image,
-//         comics,
-//         events
-//     });
-// }
-function writeCharCloudData(name, description, image, comics, events) 
-{
-    const db = getDatabase();
-    set(ref(db, 'favorites/' + name), {
-        name,
-        description,
-        image,
-        comics,
-        events
-    });
-}
-
-const reference = ref(getDatabase(), "favorites");
-function dataChanged(snapshot){
-    snapshot.forEach(data => {
-        const childData = data.val();
-        console.log(childData);
-        const communitySection = document.querySelector("#community-list");
-        if(communitySection != null)
-        {
-            const marvelCard = document.createElement("marvel-card");
-            marvelCard.dataset.name = childData.name ?? "No name found";
-            marvelCard.dataset.description = childData.description ?? "No description found";
-            marvelCard.dataset.image = childData.image ?? "";
-            marvelCard.dataset.comics = childData.comics ?? "None";
-            marvelCard.dataset.events = childData.events ?? "None";
-            marvelCard.dataset.community = true;
-            communitySection.appendChild(marvelCard);
-        }
-    });
-}
-onValue(reference,dataChanged);
+import * as firebase from "./firebase.js";
 
 // If on favorites page load the favorites
 if(document.querySelector("#favorites-list") != null)
@@ -83,7 +19,6 @@ else if(document.querySelector("#search") != null)// If on app page load the UI
 
 // User Interface
 const searchButton = document.querySelector("#search");
-const resultsField = document.querySelector("#results");
 const clearButton = document.querySelector("#clear-favorites");
 const limit = document.querySelector("#limit");
 
@@ -96,15 +31,6 @@ if(searchButton != null)
         document.querySelector("#search").classList.add("is-loading");
     }   
 }       
-
-// Results field
-if(resultsField != null)
-{
-    resultsField.onchange = e => {
-        let url = getURL("specific");
-        searcher.loadJsonFetch(url, loadCharacter);
-    }
-}
 
 // Clear button
 if(clearButton != null)
@@ -219,7 +145,7 @@ function getURL(type)
     }
     else
     {
-        url += "name=" + document.querySelector("#results").value;
+        url += "name=" + document.querySelector("#selected-character").innerHTML;
         url += "&apikey=" + API_KEY;
         url += "&hash=" + HASH;
         url += "&ts=1";
@@ -236,17 +162,28 @@ const getCharacters = json =>
     let chars = results['results'];
 
     // Init HTML string
-    let html = `<option>Select a Character</option>`;
+    let html = ``;
 
     // Iterate through and add to the HTML
     for(let i = 0; i < chars.length; i++)
     {
         let char = chars[i]['name'];
-        html += `<option>${char}</option>`;
+        html += `<li>${char}</li>`;
     }
 
     // Set the HTML
     document.querySelector("#results").innerHTML = html;
+
+    // Add event listeners to all list elements
+    let listResults = document.querySelectorAll("li");
+    for(let result of listResults)
+    {
+        result.onclick = e => {
+            document.querySelector("#selected-character").innerHTML = e.target.textContent;
+            let url = getURL("specific");
+            searcher.loadJsonFetch(url, loadCharacter);
+        }
+    }
 
     // ****** Save UI state ******
     // Set the local storage key
@@ -384,7 +321,7 @@ const addCloudFavorite = () =>
     }
 
     // Write to the cloud
-    writeCharCloudData(char.name, char.description, char.image, char.comics, char.events);
+    firebase.writeCharCloudData(char.name, char.description, char.image, char.comics, char.events);
 }
 
 // Method that loads in all UI states from local storage
@@ -406,6 +343,16 @@ function loadUI()
             document.querySelector("#limit").value = storage["limit"];
         if(storage["results"] != null) // Null Check
             document.querySelector("#results").innerHTML = storage["results"];
+            // Add event listeners to all list elements
+            let listResults = document.querySelectorAll("li");
+            for(let result of listResults)
+            {
+                result.onclick = e => {
+                    document.querySelector("#selected-character").innerHTML = e.target.textContent;
+                    let url = getURL("specific");
+                    searcher.loadJsonFetch(url, loadCharacter);
+                }
+            }
         if(storage["output"] != null) // Null Check
             document.querySelector("#output").innerHTML = storage["output"];
     }
