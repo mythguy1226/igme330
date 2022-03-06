@@ -1,0 +1,13 @@
+#subheadings a {
+  color: hsl(217, 71%, 53%);
+}
+#subheadings a:hover {
+  color: hsl(204, 86%, 53%);
+}
+
+#gallery
+{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}

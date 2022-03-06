@@ -1,0 +1,89 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Robert Reddick Portfolio</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="./styles/default-styles.css">
+  <script type="module" src="src/init.js"></script>
+</head>
+<body>
+    <app-navbar data-page="gallery"></app-navbar>
+
+    <div class="column">  
+        <div class="hero is-large is-dark p-2">
+            <portfolio-header data-title="Robert Reddick Portfolio"></portfolio-header>
+            <div class="tile is-ancestor">
+                <div class="tile is-vertical is-12">
+                    <div class="tile">
+                        <div class="tile is-vertical is-parent">
+                            <div class="tile is-child">
+                                <h2 class="title is-4">Gallery:</h2>
+                                <hr>
+                                <div id="gallery">
+                                    <gallery-card data-title="Boo" 
+                                        data-image="images/boo.png"
+                                        data-description="This Project is a top-down stealth game where the player is a vampire trying to escape the humans raiding their castle. The player must get to the exit without being caught using their wits to either out-maneuver or sneak attack the humans." 
+                                        data-contributions="Designed and Programmed the AI functionality utilizing Component-based scripting in C# which involved enemy pathfinding, displayable FOV, attacks, and obstacle blocks. Also implemented collisions required for core gameplay functionality using rigid bodies and programming scripts for collision resolutions." 
+                                        data-technology="Made in Unity", 
+                                        data-learned="During this process I learned how to successfully create a stealth game. I learned a lot more about AI as well as the conditions required for more complex actions fpr enemies. During this process I was able to learn a lot more about Unity's built in systems that can be used for implementing different methods." 
+                                        data-challenges="One of the challenges of this project for me was getting the AI to not detect the player if there was an obstacle between them. Originally I tried normal RayCasting in Unity and when that didnt work I created my own method which worked. Further along while trying to polish my method I was able to successfully refactor the code using Unity's 2D RayCasting and a Layer Mask.">
+                                    </gallery-card>
+
+                                    <gallery-card data-title="Inverse Dungeon" 
+                                        data-image="images/inversedungeon.png"
+                                        data-description="This is a 2D Platformer game where the player is a basic enemy in a dungeon trying to avoid the hero who is exploring the dungeon and trying to beat the level. The player must retreat into the dungeon and gather other enemies to help defeat the hero before they reach the end. This game was created using C# and the Monogame Framework." 
+                                        data-contributions="Designed and Programmed the gameplay mechanics such as player movement, controls, player attacking, and spawning enemies, AI used for enemies, and enemy pickups utilizing Object Oriented Principles." 
+                                        data-technology="Created in Visual Studio 2019", 
+                                        data-learned="During this process I learned how to successfully create a game using C# and the Monogame Framework. I also learned how to develop the mechanics required to make a 2D platformer function, and how to make simple AI by making enemies track the hero based on their locations." 
+                                        data-challenges="I overcame some challenges I was originally having with my enemy pickups. I was trying to put a cap on how many enemies they could spawn but when it reached the cap the player could somehow spawn them infinitely. I found that this was a miscalculation on how I was handling the array and after some more work I fixed the bug.">
+                                    </gallery-card>
+
+                                    <gallery-card data-title="Mutation Genesis" 
+                                        data-image="images/mutationGenesis.png"
+                                        data-description="This is a 2D Top-down shooter game where the player is a mutant who underwent experiments with a new virus that gave him special abilities but deformed the rest of the human population leaving him as a survivor amongst endless waves of the undead. In this game the player fights zombies in wave-based combat and has access to a variety of abilities which can all be accessed through a shop found in the pause menu. This game was created using Javascript and PixiJS." 
+                                        data-contributions="This was a solo Academic project" 
+                                        data-technology="Created in Visual Studio Code", 
+                                        data-learned="During this process I learned how to successfully create a game using Javascript and PixiJS. I also learned how to put together a variety of different Sprites and Animated Sprites to further enhance the look of my games." 
+                                        data-challenges="I overcame some challenges I was originally having with my Collisions, I approached this by deciding what Collision Detection Method would have given me a more accurate response and therefore I found I needed to implement Bounding Circles instead of Bounding Boxes.">
+                                    </gallery-card>
+
+                                    <gallery-card data-title="Marvel Character Search" 
+                                        data-image="images/marvelthumbnail.jpg"
+                                        data-description="A wep app used for displaying characters from the Marvel Universe. This was made using Javascript and the Marvel API. It can be used to display a description of the character, as well as comics and events that character was in. You can also do more general searches by searching by what the character name starts with." 
+                                        data-contributions="This was a solo Academic project" 
+                                        data-technology="Created in Visual Studio Code", 
+                                        data-learned="During this process I learned how to create Web Applications using web APIs and how to use the APIs to display different information based on selected filters." 
+                                        data-challenges="Biggest challenge I overcame at first was getting the API itself to work. I found it pretty difficult at first because I didnt understand the documentation. I overcame this by playing around with different outcomes until I was finally able to see what the documentation was trying to say and after that I found it easy to utilize the API.">
+                                    </gallery-card>
+
+                                    <gallery-card data-title="Asteroids" 
+                                        data-image="images/asteroidsthumbnail.png"
+                                        data-description="This Project is a recreation of the classic arcade game Asteroids but with some differences. It is a 2D Shoot 'em up where the player must survive waves of obstacles with increasing difficulty." 
+                                        data-contributions="This was a solo Academic project" 
+                                        data-technology="Created in Unity", 
+                                        data-learned="During this process I learned how to successfully create a game in Unity. I also learned a general process for making shoot 'em up games which gives me the fundamentals needed to then go and make more advanced features." 
+                                        data-challenges="The main challenge with this project I had to overcome were my collision responses. I was having many issues with manipulating my lists and a variety of different errors when it came to keeping track of bullets and asteroids. I fixed this issue by debugging the algorithm I originally had and was able to come up with a method that both worked and was error free.">
+                                    </gallery-card>
+
+                                    <gallery-card data-title="Radioactive Run" 
+                                        data-image="images/radioactiverun.png"
+                                        data-description="This Project is a 2D Platformer and Sidescroller where the player must advance through various levels in attempt to escape a large wave of radiation. As the levels advance new obstacles become introduced such as breakable crates, different forms of parkour, enemies, and spikes." 
+                                        data-contributions="This was a solo project I did over winter break" 
+                                        data-technology="Created in Visual Studio Code", 
+                                        data-learned="During this process I learned how to successfully create a platformer using PixiJS and Javascript. I also learned how to add a scrolling effect to my games." 
+                                        data-challenges="The main challenge I cam across in this project was the collisions. At first I found it difficult to make static tiles keep the player from moving through it in case they bumped into it. But through a lot of trial and error with certain conditions I was able to make it work.">
+                                    </gallery-card>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <marvel-footer data-title="Robert Reddick" data-year="2022"></marvel-footer>
+    </div>
+</body>
+</html>
