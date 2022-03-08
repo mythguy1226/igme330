@@ -6,8 +6,46 @@ template.innerHTML = `
     :host{
         user-select: none;
     }
+    a.underline
+    {
+        position: relative;
+    }
+    a.underline:before 
+    {
+        content: "";
+        position: absolute;
+        width: 0;
+        height: 0.2rem;
+        margin-bottom: 1.5rem;
+        bottom: 0;
+        left: 0;
+        background-color: #fff;
+        visibility: hidden;
+        transition: all 0.3s ease-in-out;
+    }
+    a.underline:hover:before 
+    {
+        visibility: visible;
+        width: 95%;
+    }
+    .navbar-burger
+    {
+        background-color: #000;
+    }
+    .navbar-burger:hover
+    {
+        background-color: #000;
+    }
+    span
+    {
+        color: #fff;
+    }
+    a:hover, a:hover span 
+    {
+        color: #00ffff;
+    }
   </style>
-  <nav class="navbar has-shadow is-white">
+  <nav class="navbar has-shadow is-black">
     <!-- logo / brand -->
     <div class="navbar-brand">
         <a class="navbar-item" href="home.html">
@@ -22,15 +60,15 @@ template.innerHTML = `
 
     <div class="navbar-menu" id="nav-links">
         <div class="navbar-start">
-            <a id="home" class="navbar-item" href="home.html">
+            <a id="home" class="navbar-item underline" href="home.html">
                 Home
             </a>
         
-            <a id="gallery" class="navbar-item is-hoverable" href="gallery.html">
+            <a id="gallery" class="navbar-item is-hoverable underline" href="gallery.html">
                 Gallery
             </a>
         
-            <a id="resume" class="navbar-item is-hoverable" href="resume.html">
+            <a id="resume" class="navbar-item is-hoverable underline" href="resume.html">
                 Resume
             </a>
         </div>
