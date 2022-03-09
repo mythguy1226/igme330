@@ -44,6 +44,58 @@ template.innerHTML = `
     {
         color: #00ffff;
     }
+
+    @media only screen and (max-width: 1023px)
+    {
+        .navbar-menu
+        {
+            background-color: #000;
+        }
+        a.underline:hover
+        {
+            color: #000;
+        }
+        .navbar-burger
+        {
+            background-color: #000;
+        }
+        .navbar-burger:hover
+        {
+            background-color: #000;
+        }
+        span
+        {
+            color: #fff;
+        }
+        a:hover, a:hover span 
+        {
+            color: #00ffff;
+        }
+
+        a.underline
+        {
+            position: relative;
+            color: #fff;
+        }
+        a.underline:before 
+        {
+            content: "";
+            position: absolute;
+            width: 0;
+            height: 0.2rem;
+            margin-bottom: 1.5rem;
+            bottom: 0;
+            left: 0;
+            background-color: #fff;
+            visibility: hidden;
+            transition: all 0.3s ease-in-out;
+        }
+        a.underline:hover:before 
+        {
+            visibility: hidden;
+            width: 95%;
+        }
+    }
   </style>
   <nav class="navbar has-shadow is-black">
     <!-- logo / brand -->

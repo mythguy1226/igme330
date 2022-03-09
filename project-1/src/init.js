@@ -4,22 +4,14 @@ import "./marvel-header.js";
 import "./marvel-card.js";
 import "./app-navbar.js";
 import * as searcher from "./searcher.js";
-import * as firebase from "./firebase.js";
 
-// If on favorites page load the favorites
-if(document.querySelector("#favorites-list") != null)
-{
-    loadFavorites();
-}
-else if(document.querySelector("#search") != null)// If on app page load the UI
+if(document.querySelector("#search") != null)// If on app page load the UI
 {
     loadUI();
 }
 
-
 // User Interface
 const searchButton = document.querySelector("#search");
-const clearButton = document.querySelector("#clear-favorites");
 const limit = document.querySelector("#limit");
 
 // Search button
@@ -31,14 +23,6 @@ if(searchButton != null)
         document.querySelector("#search").classList.add("is-loading");
     }   
 }       
-
-// Clear button
-if(clearButton != null)
-{
-    clearButton.onclick = e => {
-        clearFavorites();
-    }
-}
 
 // Limit selector
 if(limit != null)
@@ -237,93 +221,6 @@ const loadCharacter = json =>
     showCharacter({name:name, description:description, image:imgPath, comics:comics, events:events});
 }
 
-
-// Loads all characters from favorites
-function loadFavorites()
-{
-    // Set the local storage key
-    const KEY = "rdr8959-marvel-storage";
-
-    // Get the current object stored as JSON and parse
-    let storage = localStorage.getItem(KEY);
-    storage = JSON.parse(storage);
-
-    // Null check object
-    if(storage == null)
-        return;
-
-    // Get the favorites from local storage
-    let favorites = storage["favorites"];
-
-    // Get reference to favorites section
-    const favoritesSection = document.querySelector("#favorites-list");
-
-    // Null Check Favorites
-    if(favorites != null)
-    {
-        // Init HTML
-        let html = ``;
-
-        // Loop through favorites and add the proper HTML
-        for(let favorite of favorites)
-        {
-            html += favorite;
-        }
-
-        // Sets the favorites section
-        favoritesSection.innerHTML = html;
-    }
-}
-
-// Clear out the favorites tab
-const clearFavorites = () =>
-{
-    // Set the local storage key
-    const KEY = "rdr8959-marvel-storage";
-
-    // Get the current object stored as JSON and parse
-    let storage = localStorage.getItem(KEY);
-    storage = JSON.parse(storage);
-
-    // Null check object
-    if(storage == null)
-        return;
-
-    // Get the favorites from local storage
-    let favorites = storage["favorites"];
-
-    // Clear favorites if they exist
-    if(favorites != null)
-    {
-        storage["favorites"] = null;
-        // Clear out the local storage
-        storage = JSON.stringify(storage);
-        localStorage.setItem(KEY, storage);
-    }
-
-    // Reset the HTML on the favorite's page
-    document.querySelector("#favorites-list").innerHTML = ``;
-}
-
-// Add a character team to the community favorites list
-const addCloudFavorite = () =>
-{
-    // Get the name being saved
-    const savedChar = document.querySelector("#output").firstChild;
-
-    // Convert HTML card into a character object
-    const char = {
-        "name": savedChar.dataset.name,
-        "description": savedChar.dataset.description,
-        "image": savedChar.dataset.image,
-        "comics": savedChar.dataset.comics,
-        "events": savedChar.dataset.events
-    }
-
-    // Write to the cloud
-    firebase.writeCharCloudData(char.name, char.description, char.image, char.comics, char.events);
-}
-
 // Method that loads in all UI states from local storage
 function loadUI()
 {
@@ -357,5 +254,3 @@ function loadUI()
             document.querySelector("#output").innerHTML = storage["output"];
     }
 }
-
-export {addCloudFavorite};

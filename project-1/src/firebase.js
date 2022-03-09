@@ -1,6 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-app.js";
 import { getDatabase, ref, set, push, onValue } from  "https://www.gstatic.com/firebasejs/9.6.7/firebase-database.js";
+import { getFavoriteData } from "./favorites.js";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -17,7 +18,7 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-function writeCharCloudData(name, description, image, comics, events) 
+function writeCharCloudData(name, description, image, comics, events, count) 
 {
     const db = getDatabase();
     set(ref(db, 'favorites/' + name), {
@@ -25,12 +26,23 @@ function writeCharCloudData(name, description, image, comics, events)
         description,
         image,
         comics,
-        events
+        events,
+        count
     });
 }
 
+// Function for getting character information
 const reference = ref(getDatabase(), "favorites");
 function dataChanged(snapshot){
+
+    // Reset HTML
+    const communitySection = document.querySelector("#community-list");
+    if(communitySection != null)
+    {
+        communitySection.innerHTML = ``;
+    }
+
+    // Iterate through database to display
     snapshot.forEach(data => {
         const childData = data.val();
         const communitySection = document.querySelector("#community-list");
@@ -43,10 +55,31 @@ function dataChanged(snapshot){
             marvelCard.dataset.comics = childData.comics ?? "None";
             marvelCard.dataset.events = childData.events ?? "None";
             marvelCard.dataset.community = true;
+            marvelCard.dataset.count = childData.count ?? 0;
             communitySection.appendChild(marvelCard);
         }
     });
 }
 onValue(reference,dataChanged);
 
-export {writeCharCloudData};
+// Add a character to the community favorites list
+const addCloudFavorite = (button) =>
+{
+    // Get the name being saved
+    const savedChar = getFavoriteData(button);
+
+    // Convert HTML card into a character object
+    const char = {
+        "name": savedChar.name,
+        "description": savedChar.description,
+        "image": savedChar.image,
+        "comics": savedChar.comics,
+        "events": savedChar.events,
+        "count": savedChar.count ?? 0
+    }
+
+    // Write to the cloud
+    writeCharCloudData(char.name, char.description, char.image, char.comics, char.events, char.count + 1);
+}
+
+export {addCloudFavorite};

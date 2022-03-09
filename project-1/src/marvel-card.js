@@ -1,4 +1,4 @@
-import { addCloudFavorite } from "./init.js";
+import * as favorites from "./favorites.js";
 const template = document.createElement("template");
 template.innerHTML = `
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
@@ -6,8 +6,8 @@ template.innerHTML = `
       .card
       {
         margin: 2rem;
-        max-width: 40rem;
-        min-width: 40rem;
+        max-width: 20rem;
+        /*min-width: 40rem;*/
       }
       .content
       {
@@ -88,7 +88,7 @@ template.innerHTML = `
     {
         // Click Event Handler
         this.delete.onclick = () => {
-          deleteFavorite(this.h2.textContent);
+          favorites.deleteFavorite(this.h2.textContent);
           const clearButton = document.querySelector("#clear-favorites");
           if(clearButton != null)
           {
@@ -101,7 +101,7 @@ template.innerHTML = `
           {
             this.favorite.disabled = true;
             this.favorite.textContent = "Favorited!";
-            addFavorite();
+            favorites.addFavorite(this.favorite);
           }
           else // Fail gracefully and notify user that you can't save default 
           {
@@ -175,11 +175,11 @@ template.innerHTML = `
         this.image.src = imageUrl;
 
         // Check if in favorites already
-        if(checkInFavorites(this.h2.textContent))
+        if(favorites.checkInFavorites(this.h2.textContent))
         {
           this.favorite.disabled = true;
           this.favorite.textContent = "Favorited!";
-          addFavorite();
+          favorites.addFavorite();
         }
 
         // Check if a community favorite
@@ -187,137 +187,10 @@ template.innerHTML = `
         {
           // Remove all buttons from the list
           let buttons = this.shadowRoot.querySelectorAll("button");
-          this.shadowRoot.querySelector(".card-header").removeChild(buttons[0]);
+          //this.shadowRoot.querySelector(".card-header").removeChild(buttons[0]);
           this.shadowRoot.querySelector(".card-header").removeChild(buttons[1]);
         }
     }
 }
 
 customElements.define('marvel-card', MarvelCard);
-
-// Add a character to the favorites list
-const addFavorite = () =>
-{
-    // Set the local storage key
-    const KEY = "rdr8959-marvel-storage";
-    //localStorage.setItem(KEY, null);
-    // Get the current object stored as JSON and parse
-    let storage = localStorage.getItem(KEY);
-    storage = JSON.parse(storage);
-
-    // Null check object
-    if(storage == null)
-        storage = {};
-    if(document.querySelector("#output") == null)
-      return;
-
-    // Get the name being saved
-    const savedChar = document.querySelector("#output").innerHTML;
-    
-    // Get favorites array from object then add the character
-    if(storage["favorites"] != null)
-    {
-        let favorites = storage["favorites"];
-        if(!favorites.includes(savedChar))
-        {
-          favorites.push(savedChar);
-          storage["favorites"] = favorites;
-        }
-    }
-    else
-    {
-        let favorites = [];
-        favorites.push(savedChar);
-        storage["favorites"] = favorites;
-    }
-
-    // Stringify the JSON to store
-    storage = JSON.stringify(storage);
-    localStorage.setItem(KEY, storage);
-
-    // Add to the cloud
-    addCloudFavorite();
-}
-
-// Add a character to the favorites list
-const deleteFavorite = (name) =>
-{
-    // This button's existence is the indicator for which action to take
-    const clearButton = document.querySelector("#clear-favorites");
-
-    if(clearButton != null) // This is for the favorites page to remove from list
-    {
-      // Set the local storage key
-      const KEY = "rdr8959-marvel-storage";
-
-      //Get the current object stored as JSON and parse
-      let storage = localStorage.getItem(KEY);
-      storage = JSON.parse(storage);
-
-      // Null check object
-      if(storage == null)
-          storage = {};
-
-      // Get favorites array from object then remove the character
-      if(storage["favorites"] != null)
-      {
-          // Iterate through favorites to find the index
-          let favorites = storage["favorites"];
-          let index = 0;
-          for(let favorite of favorites)
-          {
-            // Use string literals to find the correct character
-            if(favorite.includes(`data-name="${name}"`))
-            {
-              index = favorites.indexOf(favorite);
-
-              // Remove the favorite from the list
-              if (index > -1) 
-              {
-                favorites.splice(index, 1);
-              }
-              storage["favorites"] = favorites;
-            }
-          }
-      }
-
-      // Stringify the JSON to store
-      storage = JSON.stringify(storage);
-      localStorage.setItem(KEY, storage);
-    }
-    else // This is for the app page button to reset the slots to normal
-    {
-      document.querySelector("#output").innerHTML = `<marvel-card></marvel-card>`;
-    }
-}
-
-// Method that checks favorites list for name given
-function checkInFavorites(name) 
-{
-  // Set the local storage key
-  const KEY = "rdr8959-marvel-storage";
-
-  //Get the current object stored as JSON and parse
-  let storage = localStorage.getItem(KEY);
-  storage = JSON.parse(storage);
-
-  // Null check object
-  if(storage == null)
-      storage = {};
-
-  // Get favorites array from object then remove the character
-  if(storage["favorites"] != null)
-  {
-      // Iterate through favorites to find the index
-      let favorites = storage["favorites"];
-      for(let favorite of favorites)
-      {
-        // Use string literals to find the correct character
-        if(favorite.includes(`data-name="${name}"`))
-        {
-          return true;
-        }
-      }
-  }
-  return false;
-}
