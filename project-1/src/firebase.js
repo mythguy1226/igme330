@@ -1,7 +1,10 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-app.js";
-import { getDatabase, ref, set, push, onValue } from  "https://www.gstatic.com/firebasejs/9.6.7/firebase-database.js";
+import { getDatabase, ref, set, push, onValue, get } from  "https://www.gstatic.com/firebasejs/9.6.7/firebase-database.js";
 import { getFavoriteData } from "./favorites.js";
+import * as searcher from "./searcher.js";
+import * as manager from "./character-management.js";
+
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -18,16 +21,28 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-function writeCharCloudData(name, description, image, comics, events, count) 
+// Method that writes character data to the cloud
+function writeCharCloudData(name, description, image, comics, events) 
 {
+    // Get the database
     const db = getDatabase();
-    set(ref(db, 'favorites/' + name), {
-        name,
-        description,
-        image,
-        comics,
-        events,
-        count
+
+    // Push a like!
+    const count_ref = ref(db, 'likes/' + name);
+    push(count_ref, "Liked!");
+
+    // Set the count to the size of likes
+    let snapshot = get(count_ref);
+    snapshot.then((value) => {
+        // Set the character data
+        set(ref(db, 'favorites/' + name), {
+            name,
+            description,
+            image,
+            comics,
+            events,
+            "likes" : value.size
+        });
     });
 }
 
@@ -42,6 +57,7 @@ function dataChanged(snapshot){
         communitySection.innerHTML = ``;
     }
 
+    let arr = [];
     // Iterate through database to display
     snapshot.forEach(data => {
         const childData = data.val();
@@ -55,10 +71,47 @@ function dataChanged(snapshot){
             marvelCard.dataset.comics = childData.comics ?? "None";
             marvelCard.dataset.events = childData.events ?? "None";
             marvelCard.dataset.community = true;
-            marvelCard.dataset.count = childData.count ?? 0;
+            marvelCard.dataset.likes = childData.likes ?? 0;
             communitySection.appendChild(marvelCard);
         }
+        else
+        {
+            // Push a separate array containing likes data
+            arr.push({"name" : childData.name, "likes" : childData.likes});
+        }
     });
+
+    // Create the popular list section
+    if(document.querySelector("#search") != null)
+    {
+        // Get the top 5 values for the most popular characters
+        let mostPopularCharacters = arr.sort((a,b) => b.likes-a.likes).slice(0,5);
+
+        // Init HTML string
+        let html = ``;
+
+        // Iterate through and add to the HTML
+        for(let i = 0; i < mostPopularCharacters.length; i++)
+        {
+            let char = mostPopularCharacters[i]['name'];
+            let likes = mostPopularCharacters[i]['likes'];
+            html += `<p><b>Likes: </b>${likes}</p> <li>${char}</li>`;
+        }
+
+        // Set the HTML
+        document.querySelector("#popular").innerHTML = html;
+
+        // Add event listeners to all list elements
+        let listResults = document.querySelectorAll("li");
+        for(let result of listResults)
+        {
+            result.onclick = e => {
+                document.querySelector("#selected-character").innerHTML = e.target.textContent;
+                let url = manager.getURL("specific");
+                searcher.loadJsonFetch(url, manager.loadCharacter);
+            }
+        }
+    }
 }
 onValue(reference,dataChanged);
 
@@ -75,11 +128,10 @@ const addCloudFavorite = (button) =>
         "image": savedChar.image,
         "comics": savedChar.comics,
         "events": savedChar.events,
-        "count": savedChar.count ?? 0
     }
 
     // Write to the cloud
-    writeCharCloudData(char.name, char.description, char.image, char.comics, char.events, char.count + 1);
+    writeCharCloudData(char.name, char.description, char.image, char.comics, char.events);
 }
 
 export {addCloudFavorite};

@@ -75,3 +75,22 @@ body {
 {
   user-select: none;
 }
+
+#popular-location
+{
+  overflow: scroll;
+  max-height: 20rem;
+  color: #000000;
+  background-color: #ffffff;
+}
+
+#popular li:hover
+{
+  background-color: #577fde;
+  color: #153ea1;
+}
+
+#popular li
+{
+  user-select: none;
+}

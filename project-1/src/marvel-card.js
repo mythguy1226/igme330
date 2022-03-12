@@ -1,4 +1,7 @@
+// Import favorites file to be used for onclick events
 import * as favorites from "./favorites.js";
+
+// Template for Marvel-Card Web Component
 const template = document.createElement("template");
 template.innerHTML = `
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
@@ -31,6 +34,12 @@ template.innerHTML = `
       ul
       {
         color: #000;
+      }
+
+      .likes
+      {
+        margin-top: 1rem;
+        margin-left: 5rem;
       }
 
     </style>
@@ -185,10 +194,21 @@ template.innerHTML = `
         // Check if a community favorite
         if(this.dataset.community != null)
         {
-          // Remove all buttons from the list
+          // Remove all unrequired buttons from the list
           let buttons = this.shadowRoot.querySelectorAll("button");
-          //this.shadowRoot.querySelector(".card-header").removeChild(buttons[0]);
-          this.shadowRoot.querySelector(".card-header").removeChild(buttons[1]);
+          this.shadowRoot.querySelector(".card-header").removeChild(buttons[1]); // Remove Delete Button
+
+          // Get the likes from the dataset
+          const likes = this.getAttribute('data-likes') ? this.getAttribute('data-likes') : 0;
+
+          // Create the counter element
+          let counter = document.createElement("h2");
+          counter.classList.add("title");
+          counter.classList.add("is-light");
+          counter.classList.add("is-4");
+          counter.classList.add("likes");
+          counter.innerHTML = `Likes: ${likes}`;
+          this.shadowRoot.querySelector(".card-header").appendChild(counter);
         }
     }
 }
