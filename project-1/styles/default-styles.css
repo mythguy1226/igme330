@@ -10,11 +10,22 @@
   flex-direction: row;
   flex-wrap: wrap;
 }
-
+#subheadings h2 {
+  color: #ffffff;
+}
+#subheadings p {
+  color: #ffffff;
+}
 #subheadings a {
   color: hsl(217, 71%, 53%);
 }
 #subheadings a:hover {
+  color: hsl(204, 86%, 53%);
+}
+#proposal a {
+  color: hsl(217, 71%, 53%);
+}
+#proposal a:hover {
   color: hsl(204, 86%, 53%);
 }
 body {

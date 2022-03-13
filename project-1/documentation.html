@@ -16,19 +16,97 @@
         <div class="hero is-large is-dark p-2">
             <div class="hero-head">
                 <marvel-header data-title="Marvel Character Searcher"></marvel-header>
-                <div id="subheadings" class="section">
+                <div id="subheadings" class="content">
+                    <p class="is-size-4"><i>Information on the project</i></p>
                     <h2 class="is-size-3">Project Requirements:</h2>
-                    <a class="is-size-4" href="https://github.com/tonethar/IGME-330-Spring-2022/blob/main/projects/p1-checkpoint-2.md">Link to Requirements</a>
+                    <ul>
+                        <li>
+                            <a class="is-size-4" href="https://github.com/tonethar/IGME-330-Spring-2022/blob/main/projects/p1-checkpoint-2.md">Link to Requirements</a>
+                        </li>
+                    </ul>
+                    
                     <h2 class="is-size-3">Resources Utilized:</h2>
-                    <a class="is-size-4" href="https://marvel.fandom.com/wiki/Category:Characters">Link to landing page image</a> <br>
-                    <a class="is-size-4" href="https://en.wikipedia.org/wiki/Marvel_Comics">Link to Marvel Logo</a>
+                    <ul>
+                        <li>
+                            <a class="is-size-4" href="https://marvel.fandom.com/wiki/Category:Characters">Link to landing page image</a>
+                        </li>
+                        <li>
+                            <a class="is-size-4" href="https://en.wikipedia.org/wiki/Marvel_Comics">Link to Marvel Logo</a>
+                        </li>
+                        <li>
+                            <a class="is-size-4" href="https://www.wallpaperflare.com/marvel-logo-marvel-comics-typography-red-western-script-text-wallpaper-qisob">Link to page background</a>
+                        </li>
+                    </ul>
+
                     <h2 class="is-size-3">API:</h2>
-                    <a class="is-size-4" href="https://developer.marvel.com/docs">Link to API</a>
+                    <ul>
+                        <li>
+                            <a class="is-size-4" href="https://developer.marvel.com/">Link to Marvel API Home-page</a>
+                        </li>
+                        <li>
+                            <a class="is-size-4" href="https://developer.marvel.com/docs">Link to API Documentation</a>
+                        </li>
+                    </ul>
+
                     <h2 class="is-size-3">Noteworthy:</h2>
+                    <ul>
+                        <li>Bulma Framework:</li>
+                        <ul>
+                            <li>
+                                Very mobile friendly and very responsive. All elements scale properly to the screen size and
+                                a hamburger menu icon pops up to replace the navbar when the screen size gets small enough for mobile devices.
+                            </li>
+                            <li>
+                                Utilizes different layout classes to help structure the page such as:
+                            </li>
+                            <ol>
+                                <li>Tiles which allows the user to map out their elements</li>
+                                <li>Section classes which are used to emphasize a section of elements by adding an indent and shifting everything to the left.</li>
+                                <li>Content classes which are used to structure the effected elements like a normal HTML page</li>
+                            </ol>
+                        </ul>
+                        <li>Code:</li>
+                        <ul>
+                            <li>All code is within 9 ES6 modules that follow DRY</li>
+                            <li>Method for getting proper URL to send to the API has a parameter for general and specific searches</li>
+                            <li>Each page's functionality has its own file for organizing methods and all are imported into init.js</li>
+                        </ul>
+                        <li>User Experience:</li>
+                        <ul>
+                            <li>Bulma loading class is utilized on the search button to let the user know a search is being performed</li>
+                            <li>Favorite button disables once clicked and is kept track of to ensure users can't favorite the same card multiple times</li>
+                            <li>Favorite button alerts user they can't perform the action when attempting to favorite the default card</li>
+                            <li>Community page will show the user how many likes a character has and allows them to favorite any character in the list</li>
+                        </ul>
+                    </ul>
+
                     <h2 class="is-size-3">Grading:</h2>
+                    <ul>
+                        <li>All base requirements were met</li>
+                        <li>Went beyond requirements for firebase to include a likes counter for each character</li>
+                        <li>App page includes a section to display most popular characters for users to check out</li>
+                    </ul>
+
                     <h2 class="is-size-3">To-do:</h2>
+                    <ol>
+                        <li>Home:</li>
+                        <ul>
+                            <li>Create a nice collage of marvel characters to replace the landing page image</li>
+                        </ul>
+                        <li>App:</li>
+                        <ul>
+                            <li>Improve the styling of the controls section</li>
+                            <li>Add an option to show or hide the comics/events section in the marvel-card</li>
+                        </ul>
+                        <li>Favorites</li>
+                        <ul>
+                            <li>Improve page styling</li>
+                        </ul>
+                    </ol>
                 </div>
-                <div id="proposal" class="section">
+                <hr>
+
+                <div id="proposal" class="content">
                     <h2 class="subtitle is-size-4">Proposal:</h2>
                     <p class="section is-size-4">
                         Link to Marvel's API Documentation: <br>

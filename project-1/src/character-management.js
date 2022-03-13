@@ -6,6 +6,13 @@ const searchButton = document.querySelector("#search");
 if(searchButton != null)
 {
     searchButton.onclick = () => {
+        // Check to make sure there is a search term present
+        let term = document.querySelector("#searchterm").value;
+        if(term.length < 1) // If nothing is there bail out and notify the user
+        {
+            document.querySelector("#selected-character").textContent = "Please enter a search term!";
+            return;
+        }
         let url = getURL("general");
         searcher.loadJsonFetch(url, getCharacters);
         document.querySelector("#search").classList.add("is-loading");
@@ -70,13 +77,6 @@ function getURL(type)
 
     // encode spaces and special characters
     term = encodeURIComponent(term);
-
-    // if there's no term to search then bail out of the function (return does this)
-    if(term.length < 1) 
-    {
-        document.querySelector("#output").innerHTML = "<b>No results found, please enter a search term!</b>";
-        return;
-    }
 
     // Continue to build on URL
     if(type == "general")
