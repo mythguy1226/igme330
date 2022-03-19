@@ -34,15 +34,6 @@ body {
   background-position: center;
 }
 
-#team {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  padding-right: 10rem;
-  padding-left: 10rem;
-}
-
 .button
 {
   background-color: #1f4cb5;
