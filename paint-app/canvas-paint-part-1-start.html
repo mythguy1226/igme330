@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>Canvas Paint App</title>
+	 <style>
+      body {
+         background: #eeeeee;
+         font-family: tahoma, verdana, sans serif;
+      }
+
+      #main-canvas {
+         background: #ffffff;
+         position:absolute;
+         z-index: 0;
+         left: 10px;
+         top: 10px;
+         box-shadow: 4px 4px 8px rgba(0,0,0,0.5);
+      }
+      
+      
+       #controls {
+         position: absolute;
+          z-index: 2;
+         left: 25px;
+         top: 25px;
+      }
+      
+      label{
+      	font-size: 12px;
+      	margin-right:0.75em;
+      }
+      
+    </style>
+    
+	<script type="module">
+	
+// MODULE SCOPED VARIABLES
+let canvas = null,
+    ctx = null,
+    dragging = false,
+    lineWidth = null,
+    strokeStyle = null;
+
+// CONSTANTS
+const defaultLineWidth = 3;
+const defaultStrokeStyle = "red";
+
+// HELPER FUNCTION
+// Function Name: getMouse()
+// returns mouse position in local coordinate system of element
+const getMouse = (evt) => {
+	const mouse = {};
+	mouse.x = evt.pageX - evt.target.offsetLeft;
+	mouse.y = evt.pageY - evt.target.offsetTop;
+	return mouse;
+};
+
+// EVENT CALLBACK FUNCTIONS
+const doMousedown = (evt) => {
+  console.log(evt.type);
+  dragging = true;
+  // get location of mouse in canvas coordinates
+  const mouse = getMouse(evt);
+
+  // PENCIL TOOL
+  ctx.beginPath();
+  // move pen to x,y of mouse
+  ctx.moveTo(mouse.x, mouse.y);
+};
+
+const doMousemove = (evt) => {
+  // bail out if the mouse button is not down
+  if(!dragging) return;
+  // get location of mouse in canvas coordinates
+  const mouse = getMouse(evt);
+
+  // PENCIL TOOL
+  // set ctx.strokeStyle and ctx.lineWidth to correct “module variable” values
+  ctx.strokeStyle = strokeStyle;
+  ctx.lineWidth = lineWidth;
+
+  // draw a line to x,y of mouse
+  ctx.lineTo(mouse.x, mouse.y);
+
+  // stroke the line
+  ctx.stroke();
+};
+
+const doMouseup = (evt) => {
+  console.log(evt.type);
+  dragging = false;
+  ctx.closePath();
+};
+
+// if the user drags out of the canvas
+const doMouseout = (evt) => {
+  console.log(evt.type);
+  dragging = false;
+  ctx.closePath();
+};
+
+const doLineWidthChange = (evt) => {
+ lineWidth = evt.target.value;
+};
+
+const doColorChange = (evt) => {
+ strokeStyle = evt.target.value;
+};
+
+const doClear = () => {
+  ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+  drawGrid(ctx, "lightgray", 10, 10);
+};
+
+const doExport = () => {
+  // convert the canvas to a JPEG and download it
+  // https://daily-dev-tips.com/posts/vanilla-javascript-save-canvas-as-an-image/
+  const data = canvas.toDataURL("image/jpeg", 1.0);
+  const link = document.createElement("a");
+  link.download = "exported-image.jpg";
+  link.href = data;
+  link.click();
+  link.remove();
+};
+
+
+// UTILITY FUNCTIONS
+/*
+These utility functions do not depend on any global variables being in existence, 
+and produce no "side effects" such as changing ctx state variables.
+They are "pure functions" - see: http://en.wikipedia.org/wiki/Pure_function
+*/
+
+/*
+Function Name: drawGrid()
+Description: Fills the entire canvas with a grid
+*/
+const drawGrid = (ctx, color, cellWidth, cellHeight) => {
+  // save the current drawing state as it existed before this function was called
+  ctx.save();
+
+  // set some drawing state variables
+  ctx.strokeStyle = color;
+  ctx.fillStyle = "#ffffff";
+  ctx.lineWidth = 0.5;
+  ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+  
+  // vertical lines all set!
+  for (let x = cellWidth + 0.5; x < ctx.canvas.width; x += cellWidth) {
+    ctx.beginPath();
+    ctx.moveTo(x, 0);
+    ctx.lineTo(x, ctx.canvas.height);
+    ctx.stroke();
+  }
+
+  /*
+  Need horizontal lines!
+  You write it!
+  */
+  for (let y = cellHeight + 0.5; y < ctx.canvas.height; y += cellHeight) {
+    ctx.beginPath();
+    ctx.moveTo(0, y);
+    ctx.lineTo(ctx.canvas.width, y);
+    ctx.stroke();
+  }
+
+  // restore the drawing state
+  ctx.restore();
+};
+
+
+
+// FUNCTIONS
+const init = () => {
+	// initialize some variables
+  canvas = document.querySelector("#main-canvas");
+  ctx = canvas.getContext("2d");
+  lineWidth = defaultLineWidth;
+  strokeStyle = defaultStrokeStyle;
+  // set initial properties of the graphics context
+  ctx.lineWidth = lineWidth;
+  ctx.strokeStyle = strokeStyle;
+  ctx.lineCap = "round"; // "butt", "round", "square" (default "butt")
+  ctx.lineJoin = "round"; // "round", "bevel", "miter" (default “miter")
+  drawGrid(ctx, "lightgray", 10, 10);
+
+  // Hook up event listeners
+  canvas.onmousedown = doMousedown;
+  canvas.onmousemove = doMousemove;
+  canvas.onmouseup = doMouseup;
+  canvas.onmouseout = doMouseout;
+  document.querySelector("#linewidth-chooser").onchange = doLineWidthChange;
+  document.querySelector("#strokecolor-chooser").onchange = doColorChange;
+  document.querySelector("#btn-clear").onclick = doClear;
+  document.querySelector("#btn-export").onclick = doExport;
+};
+
+
+init();
+	
+	</script>
+</head>
+<body>
+	<canvas id="main-canvas" width="700" height="500">
+	Get a real browser!
+	</canvas>
+	
+	<div id="controls">
+		<label>Tool:
+			<select id="tool-chooser">
+				<option value="tool-pencil">Pencil</option>
+    		</select>
+    	</label>
+    	
+    	<label>Line Width: 
+			<select id="linewidth-chooser">
+				<option value="1">1</option>
+				<option value="2">2</option>
+        		<option value="3" selected>3</option>
+        		<option value="4">4</option>
+				<option value="5">5</option>
+        		<option value="6">6</option>
+        		<option value="7">7</option>
+				<option value="8">8</option>
+        		<option value="9">9</option>
+        		<option value="10">10</option>
+    		</select>
+    	</label>
+
+      <label>Stroke Color: 
+        <select id="strokecolor-chooser">
+          <option value="red" selected>Red</option>
+          <option value="orange">Orange</option>
+              <option value="yellow">Yellow</option>
+              <option value="green">Green</option>
+          <option value="blue">Blue</option>
+              <option value="cyan">Cyan</option>
+              <option value="purple">Purple</option>
+          <option value="magenta">Magenta</option>
+              <option value="pink">Pink</option>
+              <option value="black">Black</option>
+          </select>
+        </label>
+    	
+    	
+    	<span><input id="btn-clear" type="button" value="Clear"/></span>
+    	<span><input id="btn-export" type="button" value="Export"/></span>
+    </div>
+
+</body>
+</html>
