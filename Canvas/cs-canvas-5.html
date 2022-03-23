@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>First Canvas</title>
+	<style type="text/css">
+	canvas{
+		border:1px solid gray;
+	}
+    body{
+        font-family: sans-serif;
+    }
+        
+    button{
+        font-size:1.2em;
+    }
+        
+    section{
+        margin:.5em 0 .5em 0;
+    }
+	</style>
+	<script>
+		// #0 - in this class we will always use ECMAScript 5's "strict" mode
+		// See what 'use strict' does here:
+		// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions_and_function_scope/Strict_mode
+		'use strict';
+		
+		// #1 call the `init` function after the pages loads
+		window.onload = init;
+
+        // Declare fields
+        let paused = false;
+        let createRectangles =true;
+        let createArcs = true;
+        let createLines = true;
+
+        let start, previousTimeStamp;
+        let done = false
+
+        // Update Loop
+        function step(timestamp) {
+            if (start === undefined) {
+                start = timestamp;
+                }
+            const elapsed = timestamp - start;
+
+            if (previousTimeStamp !== timestamp) {
+                const count = Math.min(0.1 * elapsed, 400);
+
+                // Call update function
+                update();
+
+                if (count === 200) done = true;
+            }
+
+            // Stop the animation after 5 seconds
+            if (!paused) 
+            { 
+                previousTimeStamp = timestamp
+                !done && window.requestAnimationFrame(step);
+            }
+        }
+
+        // Init Function 
+		function init(){
+            // Call UI to be setup
+            setupUI();
+
+            // Start update loop
+            window.requestAnimationFrame(step);
+			
+        }
+
+        // Update function to call every frame
+        function update()
+        {
+            // Conditional for drawing rectangles
+            if(createRectangles)
+            {
+                drawRandomRect();
+            }
+
+            // Draw a random circle and random line if enabled
+            if(createArcs)
+            {
+                drawRandomCircle();
+            }
+
+            if(createLines)
+            {
+                drawRandomLine();
+            }
+        }
+
+        // Method for setting up UI
+        function setupUI()
+        {
+            // Set up the buttons to work properly
+            document.querySelector("#btnPlay").onclick = () => {
+                paused = false;
+                window.requestAnimationFrame(step);
+            };
+            document.querySelector("#btnPause").onclick = () => {
+                paused = true;
+            };
+            document.querySelector("#btn-clear").onclick = () => {
+                // A - `canvas` variable points at <canvas> tag
+                let canvas = document.querySelector('canvas');
+                // B - the `ctx` variable points at a "2D drawing context"
+                let ctx = canvas.getContext('2d');
+                
+                ctx.save();
+
+                // Fill in the canvas
+                ctx.fillStyle = "#ffffff";
+                ctx.beginPath();
+                ctx.rect(0, 0, 640, 480);
+                ctx.closePath();
+                ctx.fill();
+
+                ctx.restore();
+            };
+
+            // Set up the canvas onclick handler
+            document.querySelector("canvas").onclick = canvasClicked;
+
+            // Set up click handler for rect checkbox
+            document.querySelector("#cbRectangles").onclick = (e) => {
+                createRectangles = e.target.checked;
+            };
+
+            // Set up click handler for arc checkbox
+            document.querySelector("#cbArcs").onclick = (e) => {
+                createArcs = e.target.checked;
+            };
+
+            // Set up click handler for line checkbox
+            document.querySelector("#cbLines").onclick = (e) => {
+                createLines = e.target.checked;
+            };
+        }
+
+        // Method for random colors
+        function getRandomColor()
+        {
+            // Function for getting random rgb values
+            function getByte()
+            {
+                return 55 + Math.round(Math.random() * 200);
+            }
+
+            // Return the rgba value
+            return "rgba(" + getByte() + "," + getByte() + "," + getByte() + ",.8)";
+        }
+
+        // Method for random numbers
+        function getRandomInt(min, max) 
+        {
+            // Return random number based on min and max
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        // Method for creating a random rectangle
+        function drawRandomRect()
+        {
+            // A - `canvas` variable points at <canvas> tag
+			let canvas = document.querySelector('canvas');
+			
+			// B - the `ctx` variable points at a "2D drawing context"
+			let ctx = canvas.getContext('2d');
+            
+            ctx.save();
+
+            // Get random color values for fill and stroke
+            ctx.fillStyle = getRandomColor();
+            ctx.strokeStyle = getRandomColor();
+
+            // Get random line width
+            ctx.lineWidth = getRandomInt(5, 15);
+
+            // Start Path and draw rect with random values
+            ctx.beginPath();
+            ctx.rect(getRandomInt(0, 640), getRandomInt(0, 480), getRandomInt(50, 150), getRandomInt(50, 150));
+            ctx.closePath;
+            ctx.fill();
+            ctx.stroke();
+
+            ctx.restore();
+        }
+
+        // Method for creating a random rectangle at specific coordinates
+        function drawRandomRectAt(x,y)
+        {
+            // A - `canvas` variable points at <canvas> tag
+			let canvas = document.querySelector('canvas');
+			
+			// B - the `ctx` variable points at a "2D drawing context"
+			let ctx = canvas.getContext('2d');
+            
+            ctx.save();
+
+            // Get random color values for fill and stroke
+            ctx.fillStyle = getRandomColor();
+            ctx.strokeStyle = getRandomColor();
+
+            // Get random line width
+            ctx.lineWidth = getRandomInt(5, 15);
+
+            // Start Path and draw rect with random values
+            ctx.beginPath();
+            ctx.rect(x, y, getRandomInt(50, 150), getRandomInt(50, 150));
+            ctx.closePath;
+            ctx.fill();
+            ctx.stroke();
+
+            ctx.restore();
+        }
+
+        // Method for creating random circles
+        function drawRandomCircle()
+        {
+            // A - `canvas` variable points at <canvas> tag
+			let canvas = document.querySelector('canvas');
+			
+			// B - the `ctx` variable points at a "2D drawing context"
+			let ctx = canvas.getContext('2d');
+            
+            ctx.save();
+
+            // Get random color values for fill and stroke
+            ctx.fillStyle = getRandomColor();
+            ctx.strokeStyle = getRandomColor();
+
+            // Get random line width
+            ctx.lineWidth = getRandomInt(5, 15);
+
+            // Start Path and draw rect with random values
+            ctx.beginPath();
+            ctx.arc(getRandomInt(0, 640), getRandomInt(0, 480), getRandomInt(5, 100), 0, 2 * Math.PI, false);
+            ctx.closePath;
+            ctx.stroke();
+            ctx.fill();
+
+            ctx.restore();
+        }
+
+        // Method that draws an arc
+        function drawArc(ctx,x,y,radius,fillStyle="black",lineWidth=0,strokeStyle="black")
+        {
+            ctx.save();
+
+            // Get random color values for fill and stroke
+            ctx.fillStyle = fillStyle;
+            ctx.strokeStyle = strokeStyle;
+
+            // Get random line width
+            ctx.lineWidth = lineWidth;
+
+            // Start Path and draw rect with random values
+            ctx.beginPath();
+            ctx.arc(x, y, radius, 0, 2 * Math.PI, false);
+            ctx.closePath;
+            ctx.stroke();
+            ctx.fill();
+
+            ctx.restore();
+        }
+
+        // Method for creating random circles
+        function drawRandomArc()
+        {
+            // A - `canvas` variable points at <canvas> tag
+			let canvas = document.querySelector('canvas');
+			
+			// B - the `ctx` variable points at a "2D drawing context"
+			let ctx = canvas.getContext('2d');
+
+            drawArc(ctx, getRandomInt(0, 640), getRandomInt(0, 480), getRandomInt(5, 100),getRandomColor() , getRandomInt(5, 15), getRandomColor());
+        }
+
+        // Method that draws a line
+        function drawLine(ctx,x1,y1,x2,y2,lineWidth=1,strokeStyle="black")
+        {
+            ctx.save();
+
+            // Get random color values for fill and stroke
+            ctx.strokeStyle = strokeStyle;
+
+            // Get random line width
+            ctx.lineWidth = lineWidth;
+
+            // Start Path and draw rect with random values
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.closePath();
+            ctx.stroke();
+
+            ctx.restore();
+        }
+
+        // Method for drawing random line using helper function
+        function drawRandomLine()
+        {
+            // A - `canvas` variable points at <canvas> tag
+			let canvas = document.querySelector('canvas');
+			
+			// B - the `ctx` variable points at a "2D drawing context"
+			let ctx = canvas.getContext('2d');
+
+            drawLine(ctx, getRandomInt(0, 640), getRandomInt(0, 480), getRandomInt(0, 640), getRandomInt(0, 480), getRandomInt(5, 15), getRandomColor());
+        }
+
+        // Function that handles canvas clicks
+        function canvasClicked(e){
+            let rect = e.target.getBoundingClientRect();
+            let mouseX = e.clientX - rect.x;
+            let mouseY = e.clientY - rect.y;
+
+            // A - `canvas` variable points at <canvas> tag
+            let canvas = document.querySelector('canvas');
+            // B - the `ctx` variable points at a "2D drawing context"
+            let ctx = canvas.getContext('2d');
+
+            for(let i = 0; i < 10; i++)
+            {
+                drawArc(ctx, mouseX + getRandomInt(-50, 50), mouseY + getRandomInt(-50, 50), getRandomInt(5, 100),getRandomColor() , getRandomInt(5, 15), getRandomColor());
+            }
+        }
+	</script>
+</head>
+<body>
+	<canvas width="640" height="480">
+		Get a real browser!
+	</canvas>
+    <section>
+        <button id="btnPlay">Play</button>
+        <button id="btnPause">Pause</button>
+        <button id="btn-clear">Clear Screen</button>
+      </section>
+      <section>
+        <span>
+          <input type="checkbox" id="cbRectangles" checked>
+          <label for="cbRectangles">Rectangles</label>
+          <input type="checkbox" id="cbArcs" checked>
+          <label for="cbArcs">Arcs</label>
+          <input type="checkbox" id="cbLines" checked>
+          <label for="cbLines">Lines</label>
+        </span>
+      </section>
+      <section>
+        <p>Click on the screen to "spraypaint" rectangles (you probably want the screensaver to be paused)</p>
+      </section>
+</body>
+</html>
