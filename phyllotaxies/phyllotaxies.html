@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>Sine-1 Wave</title>
+	<style>canvas{ border: 1px solid black; }</style>
+	<script>
+	"use strict";
+	const canvasWidth = 600, canvasHeight = 500;
+	let ctx;
+	let n = 0;
+	const divergence = 141;
+	const c = 5;
+	let radius = 2;
+
+    window.onload = init;
+
+    // Init function
+	function init()
+    {
+		ctx = canvas.getContext("2d");
+		canvas.width = canvasWidth;
+		canvas.height = canvasHeight;
+		ctx.fillRect(0,0,canvasWidth,canvasHeight);
+		loop();
+	}
+
+	// Loop function
+	function loop()
+	{
+		setTimeout(loop,1000/120);
+		// each frame draw a new dot
+		// `a` is the angle
+		// `r` is the radius from the center (e.g. "Pole") of the flower
+		// `c` is the "padding/spacing" between the dots
+		let a = n * dtr(divergence);
+		let r = c * Math.sqrt(n);
+
+		// now calculate the `x` and `y`
+		let x = r * Math.cos(a) + canvasWidth/2;
+		let y = r * Math.sin(a) + canvasHeight/2;
+
+		// Set color and draw the circle
+		let color = `hsl(${n/5 % 361},100%,50%)`;
+		drawCircle(ctx,x,y,radius,color);
+		radius+=0.01;
+
+		// Increment n
+		n++;
+	}
+
+
+	// Helpers
+	function dtr(degrees){
+		return degrees * (Math.PI/180);
+	}
+
+	function drawCircle(ctx,x,y,radius,color)
+    {
+		ctx.save();
+		ctx.fillStyle = color;
+		ctx.beginPath();
+		ctx.arc(x,y,radius,0,Math.PI * 2);
+		ctx.closePath();
+		ctx.fill();
+		ctx.restore();
+	}
+
+	</script>
+</head>
+<body>
+<canvas id="canvas"></canvas>
+
+</body>
+</html>
