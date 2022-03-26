@@ -11,7 +11,7 @@
     let x = 0;
     let y = 0;
     let angle = 0;
-    let fps= 12;
+    let fps= 60;
     window.onload = init;
 
     // Init function
@@ -36,22 +36,12 @@
         ctx.restore();
         x += 10;
         angle += 0.3;
-        y = canvasHeight/2 + (Math.sin(angle) * 100);
-        drawCircle(ctx,x,y,2,"white");
+        y = canvasHeight/2 + (Math.sin(angle) * 50);
+        drawCircle(ctx,x,y,2,`hsl(${x % 361},100%,50%)`);
         if(x > canvasWidth)
         {
             x = 0;
         }
-
-        // let angle = 0;
-        // let increase = Math.PI * 2 / 100;
-        // for(let i = 0; i < 1; i+= .01)
-        // {
-        //     x = i;
-        //     y = Math.sin(counter);
-        //     angle += increase;
-        //     drawCircle(ctx,x * canvasWidth,canvasHeight/2 + (y * 100),2,"white");
-        // }
     }
 
 
