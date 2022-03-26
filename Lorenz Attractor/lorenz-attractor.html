@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>Lorenz Attractor</title>
+	<style>canvas{border: 1px solid black;}</style>
+	<script>
+        // Declare fields
+        let canvas;
+        let ctx;
+        const canvasWidth = 800, canvasHeight = 600;
+        let x = 0.01, y = 0, z = 0;
+        let a = 10, b = 28, c = 8/3;
+        let scale = 8;
+        let counter = 0;
+
+        // On loading the window run init
+        window.onload = init;
+        
+        // Initialize fields and run start functions
+        function init()
+        {
+            // Get the canvas
+            canvas = document.querySelector('canvas');
+            ctx = canvas.getContext("2d");
+
+            // Set and fill the canvas
+            canvas.width = canvasWidth;
+            canvas.height = canvasHeight;
+            ctx.fillRect(0,0,canvasWidth,canvasHeight);
+            loop();
+        }
+
+        // Loop function
+        function loop()
+        {
+            // Schedule call to loop
+            requestAnimationFrame(loop);
+
+            // Increment counter
+            counter += 0.05;
+            if(counter > 360) counter = 360; // Max is 360
+
+            // Add scale factor
+            let dt = 0.01;
+
+            // Init Changes in x, y, and z
+            let dx = (a * (y-x)) * dt;
+            let dy = (x * (b-z) - y) * dt;
+            let dz = (x * y - c * z) * dt;
+
+            // Change x, y, and z by their deltas
+            x += dx;
+            y += dy;
+            z += dz;
+            
+            // Drawing Sectiom
+            ctx.save();
+            ctx.translate(canvasWidth/2, canvasHeight/2); // Translate to center of screen
+            let value = 255 - (z * scale);
+            //ctx.fillStyle = `rgb(${255 - value}, ${255-value}, ${value})`;
+            ctx.fillStyle = `hsl(${counter}, 100%, 50%)`;
+            ctx.fillRect(x * scale, y * scale, 2, 2); // Draw squares for each point
+            ctx.restore();
+        }
+
+	</script>
+</head>
+<body>
+  <canvas id="canvas"></canvas>
+</body>
+</html>
