@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>2-1 Cap and Join Demo</title>
+	<style type="text/css">
+	body{
+		background: #dddddd;
+ 	}
+
+	canvas{
+		background: #ffffff;
+		cursor: pointer;
+		margin-left: 10px;
+		margin-top: 10px;
+		box-shadow: 3px 3px 6px rgba(0,0,0,0.5);
+ 	}
+ 	
+ 	#controls{
+ 		margin-left: 10px;
+		margin-top: 10px;
+		font-family: verdana,tahoma,sans-serif;
+		
+ 	}
+ 	
+ 	label + label{
+ 		margin-left:20px;
+ 	}
+
+	#emoji
+	{
+		display:none;
+	}
+
+	
+	</style>
+	
+	<script>
+		"use strict";
+		// global variables :-p
+		let ctx = undefined;
+		let gLineCap = "butt";
+		let gLineJoin = "bevel";
+		let gLineDash = [];
+		let gStrokeStyle = "black";
+		
+		// #1 - wait for page to load
+		window.onload = init; 
+		
+		function init(){
+			console.log("init() called");
+			// #2 - get pointer to <canvas> element on page
+			var canvas = document.querySelector('canvas');
+			
+			// #3 - get pointer to "drawing context" and drawing API
+			ctx = canvas.getContext('2d');
+			
+			
+			document.querySelector('#lineCapChooser').onchange = function(e){
+				gLineCap = e.target.value;
+				drawLines();
+			};
+			
+			document.querySelector('#lineJoinChooser').onchange = function(e){
+				gLineJoin = e.target.value;
+				drawLines();
+			};
+			
+			document.querySelector('#lineDashChooser').onchange = function(e){
+				if(e.target.value == "dashed"){
+					gLineDash = [16,5]; // 16-pixel line followed by 5-pixel space
+				} else{
+					gLineDash = []; // no dashes
+				}
+				drawLines();
+			};
+
+			document.querySelector('#strokeStyleChooser').onchange = function(e){
+				if(e.target.value == "gradient")
+				{
+					let grad = ctx.createLinearGradient(10, 0, 390, 0);
+					grad.addColorStop(0, 'red');
+					grad.addColorStop(1 / 6, 'orange');
+					grad.addColorStop(2 / 6, 'yellow');
+					grad.addColorStop(3 / 6, 'green')
+					grad.addColorStop(4 / 6, 'aqua');
+					grad.addColorStop(5 / 6, 'blue');
+					grad.addColorStop(1, 'purple');
+					gStrokeStyle = grad;
+				}
+				else if(e.target.value == "radial-gradient")
+				{
+					let grad = ctx.createRadialGradient(50,40, 5, 50, 40, 300);
+					grad.addColorStop(0, 'red');
+					grad.addColorStop(1 / 6, 'orange');
+					grad.addColorStop(2 / 6, 'yellow');
+					grad.addColorStop(3 / 6, 'green')
+					grad.addColorStop(4 / 6, 'aqua');
+					grad.addColorStop(5 / 6, 'blue');
+					grad.addColorStop(1, 'purple');
+					gStrokeStyle = grad;
+				}
+				else if(e.target.value == "emoji-pattern")
+				{
+					let emoji = document.getElementById("emoji");
+					let pat = ctx.createPattern(emoji, "repeat");
+					gStrokeStyle = pat;
+				}
+				else
+				{
+					gStrokeStyle = e.target.value;
+				}
+				drawLines();
+			};
+		
+			
+			
+			drawLines();
+		}
+		
+		function drawLines(){
+			/* #4 - start drawing! */
+			// clear screen
+			ctx.clearRect(0,0,300,300);
+			
+			// See SG-2 for rest of code
+
+			ctx.beginPath();
+			// subpath for left line
+			ctx.moveTo(50, 50);
+			ctx.lineTo(50, 250);
+
+			// subpath for middle line
+			ctx.moveTo(100, 250);
+			ctx.lineTo(100, 50);
+			ctx.lineTo(250, 50);
+
+			// subpath for right line
+			ctx.moveTo(150, 250);
+			ctx.lineTo(200, 100);
+			ctx.lineTo(250, 250);
+
+			// set styles and stroke
+			ctx.strokeStyle = gStrokeStyle;
+			ctx.lineCap = gLineCap;
+			ctx.lineJoin = gLineJoin;
+			ctx.setLineDash(gLineDash);
+			ctx.lineWidth = 16;
+			ctx.stroke();
+		}
+		
+		
+		
+	
+	</script>
+	
+</head>
+<body>
+	<canvas width="300" height="300">
+         Get a browser that supports Canvas!
+         <!-- The user will only see the above text if their browser is older and doesn't support <canvas> -->
+	
+      </canvas>
+      <section id="controls">
+      	<label>lineCap: 
+			<select id="lineCapChooser">
+				<option value="butt" selected>butt</option>
+				<option value="round">round</option>
+        		<option value="square">square</option>
+    		</select>
+    	</label>
+    	
+    	<label>lineJoin: 
+			<select id="lineJoinChooser">
+				<option value="bevel" selected>bevel</option>
+				<option value="round">round</option>
+        		<option value="miter">miter</option>
+    		</select>
+    	</label>
+    	
+    	<label>setLineDash: 
+			<select id="lineDashChooser">
+				<option value="solid" selected>solid</option>
+				<option value="dashed">dashed</option>
+    		</select>
+    	</label>
+
+		<label>setStrokeStyle: 
+			<select id="strokeStyleChooser">
+				<option value="black" selected>Black</option>
+				<option value="red">Red</option>
+				<option value="green">Green</option>
+				<option value="blue">Blue</option>
+				<option value="gradient">Gradient</option>
+				<option value="radial-gradient">Radial Gradient</option>
+				<option value="emoji-pattern">Emoji Pattern</option>
+    		</select>
+    	</label>
+    	
+    	</section>
+		<img id="emoji" src="grimacing-face-emoji-small.png" />
+</body>
+</html>

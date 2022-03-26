@@ -1,0 +1,122 @@
+<html>
+<head>
+	<!--
+		A canvas example from:
+		https://developer.apple.com/library/safari/documentation/AudioVideo/Conceptual/HTML-canvas-guide/DrawingLinesandShapes/DrawingLinesandShapes.html
+		Their coding style is different from what we'll be using in class - use our style, not theirs.
+	-->
+    <title>Moving Curves</title>
+    <style>
+		canvas{
+			background: #ffffff;
+			cursor: pointer;
+			margin-left: 10px;
+			margin-top: 10px;
+			box-shadow: 3px 3px 6px rgba(0,0,0,0.5);
+		}
+ 	</style>
+    <script type="text/javascript">
+
+        // Declare fields
+        let canvas, ctx;
+        let ctrlX = 5;
+        let ctrlY = 150;
+        let controlX = 5;
+        let controlY = 150;
+        let speed;
+        let vector;
+    
+        // Initializes fields
+        function init() {
+            canvas = document.querySelector("canvas");
+            ctx = canvas.getContext("2d");
+            drawCurves();
+            speed = 2.0;
+            vector = getRandomUnitVector();
+            loop();
+        }
+        
+        // Function for drawing the curves
+        function drawCurves() 
+        {
+            // Clear canvas each time to avoid filling the canvas
+            ctx.clearRect(0,0,canvas.width,canvas.height);
+
+            // Set properties
+            ctx.lineWidth="3";
+            ctx.strokeStyle = "black";
+            let ctrlXa = 50;
+            let ctrlYa = 300;
+
+            // Start drawing path
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.quadraticCurveTo(ctrlX, ctrlY, canvas.width, canvas.height);
+
+            // Stroke it
+            ctx.stroke();
+            
+            // Repeat for red curve
+            ctx.strokeStyle = "red";
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.bezierCurveTo(controlX, controlY, ctrlXa, ctrlYa, canvas.width, canvas.height);
+            ctx.stroke();
+        }
+
+        // Function for animation loops
+        function loop(){
+            // schedule next frame
+            requestAnimationFrame(loop);
+
+            // move CP1
+            ctrlX += speed * vector.x;
+            ctrlY += speed * vector.y;
+            
+            // check boundaries
+            if (ctrlX >= canvas.width || ctrlX <= 0){
+                vector.x *= -1;	// flip direction
+                ctrlX += speed * vector.x; // move once
+            }
+            
+            if (ctrlY >= canvas.height || ctrlY <= 0){
+                vector.y *= -1;	// flip direction
+                ctrlY += speed * vector.y;
+            }
+            
+            // Redraw the curves
+            drawCurves();
+        }
+        
+        // ****** Helper functions ******
+        // Returns a random directional vector
+        function getRandomUnitVector()
+        {
+            var x = getRandom(-1,1);
+            var y = getRandom(-1,1);
+            var length = Math.sqrt(x*x + y*y);
+            if(length == 0){ // very unlikely
+                x=1; // point right
+                y=0;
+                length=1;
+            } else{
+                x /= length;
+                y /= length;
+            }
+            
+            return {x:x, y:y};
+        }
+
+        // Returns a random value between a min and max range
+        function getRandom(min, max) 
+        {
+                return Math.random() * (max - min) + min;
+        }
+
+    </script>
+</head>
+<body onload="init()" style="background-color:#e0e0e0">
+    <canvas height="200" width="400">
+    </canvas>
+</body>
+</html>
