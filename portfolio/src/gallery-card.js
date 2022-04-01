@@ -16,9 +16,22 @@ template.innerHTML = `
       {
         color: #000;
       }
+      .button
+      {
+        background-color: #000;
+        color: #fff;
+      }
+      .button:hover
+      {
+        background-color: #fff;
+        color: #000;
+      }
 
     </style>
     <div class="card">
+      <div class="card-header">
+        <button id="title" class="title is-2 button container"></button>
+      </div>
       <div class="card-image">
         <figure class="image is-4by3">
           <img alt="char-image">
@@ -27,7 +40,6 @@ template.innerHTML = `
       <div class="card-content">
         <div class="media">
           <div class="media-content">
-            <h2 class="title is-4"></h2>
             <p id="description" class="subtitle is-6">Description: </p>
           </div>
         </div>
@@ -58,7 +70,7 @@ template.innerHTML = `
         this.shadowRoot.appendChild(template.content.cloneNode(true));
 
         // Get elements from shadow root
-        this.title = this.shadowRoot.querySelector("h2");
+        this.h2 = this.shadowRoot.querySelector("#title");
         this.image = this.shadowRoot.querySelector("img");
         this.description = this.shadowRoot.querySelector("#description");
         this.p1 = this.shadowRoot.querySelector("#contributions");
@@ -98,7 +110,7 @@ template.innerHTML = `
     render()
     {
         // Get the different attributes
-        //const name = this.getAttribute('data-title') ? this.getAttribute('data-title') : "<i>No Title</i>";
+        const name = this.getAttribute('data-title') ? this.getAttribute('data-title') : "<i>No Title</i>";
         const description = this.getAttribute('data-description') ? this.getAttribute('data-description') : "<i>No Description</i>";
         const imageUrl = this.getAttribute('data-image') ? this.getAttribute('data-image') : "images/gameIcon.jpg";
         const contributions = this.getAttribute('data-contributions') ? this.getAttribute('data-contributions') : "None";
@@ -107,7 +119,7 @@ template.innerHTML = `
         const challenges = this.getAttribute('data-challenges') ? this.getAttribute('data-challenges') : "None";
 
         // Update card info
-        //this.title.innerHTML = `${name}`;
+        this.h2.innerHTML = name;
         this.description.innerHTML = `<b>Description:</b> ${description}`;
         this.p1.innerHTML = `${contributions}`;
         this.p2.innerHTML = `${technology}`;

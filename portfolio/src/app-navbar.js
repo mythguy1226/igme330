@@ -101,7 +101,7 @@ template.innerHTML = `
     <!-- logo / brand -->
     <div class="navbar-brand">
         <a class="navbar-item" href="home.html">
-            <img src="images/gameIcon.jpg" alt="site-logo" style="max-height: 70px" class="py-2 px-2">
+            <img src="images/gameIcon.png" alt="site-logo" style="max-height: 70px" class="py-2 px-2">
         </a>
         <a class="navbar-burger" id="burger">
             <span></span>
