@@ -46,12 +46,17 @@ function setupWebaudio(filePath) {
     // fft stands for Fast Fourier Transform
     analyserNode.fftSize = DEFAULTS.numSamples;
 
+    let biquadFilter = audioCtx.createBiquadFilter();
+    biquadFilter.type = "highshelf";
+
     // 7 - create a gain (volume) node
     gainNode = audioCtx.createGain();
     gainNode.gain.value = DEFAULTS.gain;
 
     // 8 - connect the nodes - we now have an audio graph
     sourceNode.connect(analyserNode);
+    //sourceNode.connect(biquadFilter);
+    //biquadFilter.connect(analyserNode);
     analyserNode.connect(gainNode);
     gainNode.connect(audioCtx.destination);
 }

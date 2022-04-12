@@ -10,6 +10,9 @@
 import * as utils from './utils.js';
 
 let ctx,canvasWidth,canvasHeight,gradient,analyserNode,audioData;
+let x = 0;
+let y = 0;
+let angle = 0;
 
 
 function setupCanvas(canvasElement,analyserNodeRef){
@@ -35,7 +38,7 @@ function draw(params={}){
 	// 2 - draw background
 	ctx.save();
     ctx.fillStyle = "black";
-    ctx.globalAlpha = .1;
+    ctx.globalAlpha = .05;
     ctx.fillRect(0,0,canvasWidth,canvasHeight);
     ctx.restore();
 		
@@ -44,28 +47,31 @@ function draw(params={}){
     {
         ctx.save();
         ctx.fillStyle = gradient;
-        ctx.globalAlpha = .3;
+        ctx.globalAlpha = .03;
         ctx.fillRect(0,0,canvasWidth,canvasHeight);
         ctx.restore();
     }
+
 	// 4 - draw bars
 	if(params.showBars)
     {
-        let barSpacing = 4;
-        let margin = 5;
-        let screenWidthForBars = canvasWidth - (audioData.length * barSpacing) - margin * 2;
-        let barWidth = screenWidthForBars / audioData.length;
-        let barHeight = 200;
-        let topSpacing = 100;
+        let topSpacing = 75;
 
         ctx.save();
-        ctx.fillStyle = `rgba(255,255,255,0.50)`;
-        ctx.strokeStyle = `rgba(0,0,0,0.50)`;
+        ctx.strokeStyle = `rgba(255,255,255,0.50)`;
+        ctx.lineWidth = 5;
+        let offset = 5;
         // loop through data and draw
         for(let i = 0; i < audioData.length; i++)
         {
-            ctx.fillRect(margin + i * (barWidth + barSpacing), topSpacing + 256-audioData[i], barWidth, barHeight);
-            ctx.strokeRect(margin + i * (barWidth + barSpacing), topSpacing + 256-audioData[i], barWidth, barHeight);
+            ctx.beginPath();
+            ctx.moveTo((canvasWidth/2) + topSpacing, (canvasHeight/2) + topSpacing);
+            ctx.lineTo((canvasWidth/2) + audioData[i]/4 + topSpacing, (canvasHeight/2) + audioData[i]/4 + topSpacing);
+            ctx.lineTo((canvasWidth/2) + audioData[i]/4 + topSpacing + offset, (canvasHeight/2) + audioData[i]/4 + topSpacing + offset);
+            ctx.translate(canvasWidth/2, canvasHeight/2);
+            ctx.rotate(.1);
+            ctx.translate(-canvasWidth/2, -canvasHeight/2);
+            ctx.stroke();
         }
         ctx.restore();
     }
@@ -101,6 +107,14 @@ function draw(params={}){
             ctx.restore();
         }
         ctx.restore();
+    }
+    x += 10;
+    angle += 0.8;
+    y = canvasHeight/2 + (Math.sin(angle) * 50);
+    drawCircle(ctx,x,y,4,`hsl(${x % 361},100%,50%)`);
+    if(x > canvasWidth)
+    {
+        x = 0;
     }
     // 6 - bitmap manipulation
 	// TODO: right now. we are looping though every pixel of the canvas (320,000 of them!), 
@@ -153,6 +167,17 @@ function draw(params={}){
     // D) copy image data back to canvas
     ctx.putImageData(imageData, 0, 0);
 		
+}
+
+function drawCircle(ctx,x,y,radius,color)
+{
+    ctx.save();
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    ctx.arc(x,y,radius,0,Math.PI * 2);
+    ctx.closePath();
+    ctx.fill();
+    ctx.restore();
 }
 
 export {setupCanvas,draw};
