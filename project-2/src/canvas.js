@@ -13,6 +13,7 @@ let ctx,canvasWidth,canvasHeight,gradient,analyserNode,audioData;
 let x = 0;
 let y = 0;
 let angle = 0;
+let fps = 15;
 
 
 function setupCanvas(canvasElement,analyserNodeRef){
@@ -29,7 +30,7 @@ function setupCanvas(canvasElement,analyserNodeRef){
 }
 
 function draw(params={}){
-  // 1 - populate the audioData array with the frequency data from the analyserNode
+    // 1 - populate the audioData array with the frequency data from the analyserNode
 	// notice these arrays are passed "by reference" 
 	analyserNode.getByteFrequencyData(audioData);
 	// OR
@@ -38,7 +39,7 @@ function draw(params={}){
 	// 2 - draw background
 	ctx.save();
     ctx.fillStyle = "black";
-    ctx.globalAlpha = .05;
+    ctx.globalAlpha = .1;
     ctx.fillRect(0,0,canvasWidth,canvasHeight);
     ctx.restore();
 		
@@ -47,9 +48,15 @@ function draw(params={}){
     {
         ctx.save();
         ctx.fillStyle = gradient;
-        ctx.globalAlpha = .03;
+        ctx.globalAlpha = .3;
         ctx.fillRect(0,0,canvasWidth,canvasHeight);
         ctx.restore();
+    }
+    
+    // Show electrical waves
+    if(params.showWaves)
+    {
+        drawWaves();
     }
 
 	// 4 - draw bars
@@ -108,14 +115,26 @@ function draw(params={}){
         }
         ctx.restore();
     }
-    x += 10;
-    angle += 0.8;
-    y = canvasHeight/2 + (Math.sin(angle) * 50);
-    drawCircle(ctx,x,y,4,`hsl(${x % 361},100%,50%)`);
-    if(x > canvasWidth)
+
+    if(params.showWaves)
     {
-        x = 0;
+        let topSpacing = 75;
+        ctx.save();
+        let color = `hsl(${x % 361},100%,50%)`;
+
+        // loop through data and draw
+        for(let i = 0; i < audioData.length; i++)
+        {
+            let waveX = (canvasWidth/2) + topSpacing + (Math.sin(angle) /** audioData[i] / 5*/); 
+            let waveY = (canvasHeight/2) + topSpacing + (Math.sin(angle) /** audioData[i] / 5*/);
+            drawCircle(ctx,waveX,waveY,4,color);
+            ctx.translate(canvasWidth/2, canvasHeight/2);
+            ctx.rotate(.5);
+            ctx.translate(-canvasWidth/2, -canvasHeight/2);
+        }
+        ctx.restore();
     }
+    
     // 6 - bitmap manipulation
 	// TODO: right now. we are looping though every pixel of the canvas (320,000 of them!), 
 	// regardless of whether or not we are applying a pixel effect
@@ -178,6 +197,21 @@ function drawCircle(ctx,x,y,radius,color)
     ctx.closePath();
     ctx.fill();
     ctx.restore();
+}
+
+function drawWaves()
+{
+    for(let i = 0; i < audioData.length; i++)
+    {
+        x += 10;
+        angle += 0.02;
+        y = canvasHeight/2 + (Math.sin(angle) * (audioData[i]));
+        drawCircle(ctx,x,y,4,`#00ffff`);
+        if(x > canvasWidth)
+        {
+            x = 0;
+        }
+    }
 }
 
 export {setupCanvas,draw};
