@@ -15,6 +15,10 @@ let y = 0;
 let angle = 0;
 let fps = 15;
 
+let waveX = 80;
+let waveY = 0;
+let waveAngle = 0;
+
 
 function setupCanvas(canvasElement,analyserNodeRef){
 	// create drawing context
@@ -118,19 +122,22 @@ function draw(params={}){
 
     if(params.showWaves)
     {
-        let topSpacing = 75;
         ctx.save();
-        let color = `hsl(${x % 361},100%,50%)`;
-
-        // loop through data and draw
         for(let i = 0; i < audioData.length; i++)
         {
-            let waveX = (canvasWidth/2) + topSpacing + (Math.sin(angle) /** audioData[i] / 5*/); 
-            let waveY = (canvasHeight/2) + topSpacing + (Math.sin(angle) /** audioData[i] / 5*/);
-            drawCircle(ctx,waveX,waveY,4,color);
+            waveX += 1;
+            waveAngle += 0.2;
+            waveY = canvasWidth/2 + (Math.atan(waveAngle) * (audioData[i]/2));
             ctx.translate(canvasWidth/2, canvasHeight/2);
             ctx.rotate(.5);
             ctx.translate(-canvasWidth/2, -canvasHeight/2);
+
+            drawCircle(ctx,waveX/1.5,waveY/1.5,4,`#00ffff`);
+            if(waveX > 400)
+            {
+                waveX = 380;
+            }
+            
         }
         ctx.restore();
     }
@@ -201,17 +208,33 @@ function drawCircle(ctx,x,y,radius,color)
 
 function drawWaves()
 {
+    ctx.save();
     for(let i = 0; i < audioData.length; i++)
     {
-        x += 10;
-        angle += 0.02;
-        y = canvasHeight/2 + (Math.sin(angle) * (audioData[i]));
+        y += 10;
+        angle += 0.5;
+        x = 100 + (Math.cos(angle) * (audioData[i] / 5));
         drawCircle(ctx,x,y,4,`#00ffff`);
-        if(x > canvasWidth)
+        if(y > canvasWidth)
         {
-            x = 0;
+            y = 0;
         }
     }
+    ctx.restore();
+
+    ctx.save();
+    for(let i = 0; i < audioData.length; i++)
+    {
+        y += 10;
+        angle += 0.5;
+        x = 700 + (Math.cos(angle) * (audioData[i] / 5));
+        drawCircle(ctx,x,y,4,`#00ffff`);
+        if(y > canvasWidth)
+        {
+            y = 0;
+        }
+    }
+    ctx.restore();
 }
 
 export {setupCanvas,draw};
