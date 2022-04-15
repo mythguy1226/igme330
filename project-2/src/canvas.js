@@ -13,11 +13,19 @@ let ctx,canvasWidth,canvasHeight,gradient,analyserNode,audioData;
 let x = 0;
 let y = 0;
 let angle = 0;
-let fps = 15;
 
 let waveX = 80;
 let waveY = 0;
 let waveAngle = 0;
+
+let fps = 30;
+
+const simplex = new SimplexNoise();
+let radius = 50, pointSize = 2, numPoints = 20;
+let frequency = 2, magnitude = .5;
+let t = 0, tIncrease = .1;
+let randomMagnitude = 4;
+let showShape = true;
 
 
 function setupCanvas(canvasElement,analyserNodeRef){
@@ -141,6 +149,11 @@ function draw(params={}){
         }
         ctx.restore();
     }
+    if(params.showPerlin)
+    {
+        drawDeformedCircle(ctx, {x:canvasWidth/2,y:canvasHeight/2,radius:20},frequency,magnitude,t/2);
+        t+=tIncrease;
+    }
     
     // 6 - bitmap manipulation
 	// TODO: right now. we are looping though every pixel of the canvas (320,000 of them!), 
@@ -234,6 +247,37 @@ function drawWaves()
             y = 0;
         }
     }
+    ctx.restore();
+}
+
+function drawDeformedCircle(ctx,circle,frequency,magnitude,t=0) {
+    ctx.save();
+    ctx.fillStyle = "#00ffff";
+    //ctx.strokeStyle= "gray";
+    ctx.lineWidth = 4;
+    ctx.beginPath();
+
+    // Sample points evenly around the circle
+    const numPoints = Math.floor(4 * circle.radius + 20);
+    for (let i = 0; i <= numPoints; i++) {
+            const angle = (2 * Math.PI * i) / numPoints;
+
+            // Figure out the x/y coordinates for the given angle
+            const x = Math.cos(angle);
+            const y = Math.sin(angle);
+
+            // Randomly deform the radius of the circle at this point
+            const deformation = simplex.noise3D(x * frequency,
+                                                y * frequency,
+                                                t) + 1;
+            const radius = circle.radius * (1 + magnitude * deformation) + audioData[0]/5;
+            // Extend the circle to this deformed radius
+            ctx.lineTo(circle.x + radius * x, circle.y + radius * y);
+    }
+    
+    ctx.closePath()
+    ctx.fill();
+    ctx.stroke();
     ctx.restore();
 }
 

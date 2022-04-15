@@ -21,7 +21,7 @@ template.innerHTML = `
 `;
 
 // Footer class
-class MarvelFooter extends HTMLElement{
+class PortfolioFooter extends HTMLElement{
   // Constructor
   constructor()
   {
@@ -58,4 +58,4 @@ class MarvelFooter extends HTMLElement{
   }
 } 
 
-customElements.define('marvel-footer', MarvelFooter);
+customElements.define('portfolio-footer', PortfolioFooter);

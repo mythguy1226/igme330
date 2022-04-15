@@ -26,11 +26,21 @@ template.innerHTML = `
         background-color: #fff;
         color: #000;
       }
+      a
+      {
+        background-color: #000;
+        color: #fff;
+      }
+      a:hover
+      {
+        background-color: #fff;
+        color: #000;
+      }
 
     </style>
     <div class="card">
       <div class="card-header">
-        <button id="title" class="title is-2 button container"></button>
+        <button id="title" class="title is-2 button container" value="Link"></button>
       </div>
       <div class="card-image">
         <figure class="image is-4by3">
@@ -84,6 +94,9 @@ template.innerHTML = `
     {
         // Render element
         this.render();
+        this.h2.onclick = () => {
+          window.location.href = this.getAttribute('data-link') ? this.getAttribute('data-link') : "No Link";;
+        };
     }
 
     // Clean up method
