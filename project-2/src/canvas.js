@@ -9,32 +9,35 @@
 
 import * as utils from './utils.js';
 
+// Canvas fields
 let ctx,canvasWidth,canvasHeight,gradient,analyserNode,audioData;
+
+// Electrical Wave Fields
 let x = 0;
 let y = 0;
 let angle = 0;
 
+// Middle Wave Fields
 let waveX = 80;
 let waveY = 0;
 let waveAngle = 0;
 
+// FPS
 let fps = 30;
 
+// Fields for Perlin noise
 const simplex = new SimplexNoise();
-let radius = 50, pointSize = 2, numPoints = 20;
 let frequency = 2, magnitude = .5;
 let t = 0, tIncrease = .1;
-let randomMagnitude = 4;
-let showShape = true;
 
-
+// Function that sets up the default canvas
 function setupCanvas(canvasElement,analyserNodeRef){
 	// create drawing context
 	ctx = canvasElement.getContext("2d");
 	canvasWidth = canvasElement.width;
 	canvasHeight = canvasElement.height;
 	// create a gradient that runs top to bottom
-	gradient = utils.getLinearGradient(ctx,0,0,0,canvasHeight,[{percent:0,color:"blue"},{percent:.25,color:"#330000"},{percent:.5,color:"#666600"},{percent:.75,color:"#660066"},{percent:1,color:"#006600"}]);
+	gradient = utils.getLinearGradient(ctx,0,0,0,canvasHeight,[{percent:0,color:"#000000"},{percent:.5,color:"#00ffff"},{percent:1,color:"#0000ff"}]);
 	// keep a reference to the analyser node
 	analyserNode = analyserNodeRef;
 	// this is the array where the analyser data will be stored
@@ -48,14 +51,14 @@ function draw(params={}){
 	// OR
 	//analyserNode.getByteTimeDomainData(audioData); // waveform data
 	
-	// 2 - draw background
+	// Draw background
 	ctx.save();
     ctx.fillStyle = "black";
     ctx.globalAlpha = .1;
     ctx.fillRect(0,0,canvasWidth,canvasHeight);
     ctx.restore();
 		
-	// 3 - draw gradient
+	// Draw background gradient
 	if(params.showGradient)
     {
         ctx.save();
@@ -71,7 +74,7 @@ function draw(params={}){
         drawWaves();
     }
 
-	// 4 - draw bars
+	// Draw bars in radial manner
 	if(params.showBars)
     {
         let topSpacing = 75;
@@ -94,7 +97,8 @@ function draw(params={}){
         }
         ctx.restore();
     }
-	// 5 - draw circles
+
+	// Draw Center Circles
     if(params.showCircles)
     {
         let maxRadius = canvasHeight/4;
@@ -128,11 +132,15 @@ function draw(params={}){
         ctx.restore();
     }
 
+    // Draw the wave in the center surrounding the circle
     if(params.showWaves)
     {
+        // Save/Restore Loop
         ctx.save();
         for(let i = 0; i < audioData.length; i++)
         {
+            // Increase values as needed
+            // Utiize different trig functions for different effects
             waveX += 1;
             waveAngle += 0.2;
             waveY = canvasWidth/2 + (Math.atan(waveAngle) * (audioData[i]/2));
@@ -147,8 +155,10 @@ function draw(params={}){
             }
             
         }
-        ctx.restore();
+        ctx.restore(); // End Loop
     }
+
+    // Draw Deformed Circle in Center
     if(params.showPerlin)
     {
         drawDeformedCircle(ctx, {x:canvasWidth/2,y:canvasHeight/2,radius:20},frequency,magnitude,t/2);
@@ -208,53 +218,80 @@ function draw(params={}){
 		
 }
 
+// Method that draws a circle
 function drawCircle(ctx,x,y,radius,color)
 {
+    // Save/Restore Loop
     ctx.save();
+
+    // Set Style
     ctx.fillStyle = color;
+
+    // begin Drawing
     ctx.beginPath();
     ctx.arc(x,y,radius,0,Math.PI * 2);
+
+    // Close Path/Fill/End Restore Loop
     ctx.closePath();
     ctx.fill();
     ctx.restore();
 }
 
+// Method that Draws the electricity waves on both ends of the canvas
 function drawWaves()
 {
+    // Save/Restore Loop
     ctx.save();
+
+    // Left Wave
     for(let i = 0; i < audioData.length; i++)
     {
+        // Increase needed values to get the electrical effect
         y += 10;
         angle += 0.5;
         x = 100 + (Math.cos(angle) * (audioData[i] / 5));
         drawCircle(ctx,x,y,4,`#00ffff`);
+
+        // Restart trig loop
         if(y > canvasWidth)
         {
             y = 0;
         }
     }
-    ctx.restore();
+    ctx.restore(); // End Loop
 
+    // Save/Restore Loop
     ctx.save();
+
+    // Right Wave
     for(let i = 0; i < audioData.length; i++)
     {
+        // Increase needed values to get the electrical effect
         y += 10;
         angle += 0.5;
         x = 700 + (Math.cos(angle) * (audioData[i] / 5));
         drawCircle(ctx,x,y,4,`#00ffff`);
+
+        // Restart trig loop
         if(y > canvasWidth)
         {
             y = 0;
         }
     }
-    ctx.restore();
+    ctx.restore(); // End Loop
 }
 
-function drawDeformedCircle(ctx,circle,frequency,magnitude,t=0) {
+// Deformed circle for the center of the canvas
+function drawDeformedCircle(ctx,circle,frequency,magnitude,t=0) 
+{
+    // Save/Restore Loop
     ctx.save();
+
+    // Set the styling
     ctx.fillStyle = "#00ffff";
-    //ctx.strokeStyle= "gray";
     ctx.lineWidth = 4;
+    
+    // Begin path for drawing
     ctx.beginPath();
 
     // Sample points evenly around the circle
@@ -270,11 +307,14 @@ function drawDeformedCircle(ctx,circle,frequency,magnitude,t=0) {
             const deformation = simplex.noise3D(x * frequency,
                                                 y * frequency,
                                                 t) + 1;
+            // Change Radius based on Audio Data
             const radius = circle.radius * (1 + magnitude * deformation) + audioData[0]/5;
+
             // Extend the circle to this deformed radius
             ctx.lineTo(circle.x + radius * x, circle.y + radius * y);
     }
     
+    // Close Path/Fill/End Restore Loop
     ctx.closePath()
     ctx.fill();
     ctx.stroke();

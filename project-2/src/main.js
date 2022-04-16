@@ -30,8 +30,6 @@ const DEFAULTS = Object.freeze({
 
 function init(){
     audio.setupWebaudio(DEFAULTS.sound1);
-    console.log("init called");
-    console.log(`Testing utils.getRandomColor() import: ${utils.getRandomColor()}`);
     let canvasElement = document.querySelector("canvas"); // hookup <canvas> element
     setupUI(canvasElement);
     canvas.setupCanvas(canvasElement,audio.analyserNode);
