@@ -35,11 +35,11 @@ template.innerHTML = `
     }
     .navbar-burger
     {
-        background-color: #000;
+        background-color: #0066ff;
     }
     .navbar-burger:hover
     {
-        background-color: #000;
+        background-color: #0066ff;
     }
     span
     {
@@ -49,12 +49,26 @@ template.innerHTML = `
     {
         color: #00ffff;
     }
+    #nav
+    {
+        background-color: #0066ff;
+        color: #fff;
+    }
+    #nav-links
+    {
+        background-color: #0066ff;
+        color: #fff;
+    }
 
     @media only screen and (max-width: 1023px)
     {
-        .navbar-menu
+        #nav
         {
-            background-color: #000;
+            color: #0066ff;
+        }
+        #nav-links
+        {
+            background-color: #0066ff;
         }
         a.underline:hover
         {
@@ -62,11 +76,11 @@ template.innerHTML = `
         }
         .navbar-burger
         {
-            background-color: #000;
+            background-color: #0066ff;
         }
         .navbar-burger:hover
         {
-            background-color: #000;
+            background-color: #0066ff;
         }
         span
         {
@@ -74,7 +88,7 @@ template.innerHTML = `
         }
         a:hover, a:hover span 
         {
-            color: #00ffff;
+            color: #000;
         }
 
         a.underline
@@ -102,7 +116,7 @@ template.innerHTML = `
         }
     }
   </style>
-  <nav class="navbar has-shadow is-black">
+  <nav id="nav" class="navbar has-shadow">
     <!-- logo / brand -->
     <div class="navbar-brand">
         <a class="navbar-item" href="home.html">
