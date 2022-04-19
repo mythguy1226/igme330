@@ -24,9 +24,14 @@ const drawParams = {
   showPerlin: true,
   electricColor: "#00ffff",
   waveColor: "#00ffff",
-  waveStyle: "Atan"
+  waveStyle: "Atan",
+  blobFill: "#00ffff",
+  blobBorder: "#000000"
 }
 let electricAngle = 0.1;
+let gradientColor1 = "#000000";
+let gradientColor2 = "#00ffff";
+let gradientColor3 = "#0000ff";
 
 // 1 - here we are faking an enumeration
 const DEFAULTS = Object.freeze({
@@ -141,6 +146,21 @@ function setupUI(canvasElement){
   document.querySelector("#wave-style").onchange = e => {
     drawParams.waveStyle = e.target.value;
   }
+  document.querySelector("#grad-color1").onchange = e => {
+    gradientColor1 = e.target.value;
+  }
+  document.querySelector("#grad-color2").onchange = e => {
+    gradientColor2 = e.target.value;
+  }
+  document.querySelector("#grad-color3").onchange = e => {
+    gradientColor3 = e.target.value;
+  }
+  document.querySelector("#blob-color1").onchange = e => {
+    drawParams.blobFill = e.target.value;
+  }
+  document.querySelector("#blob-color2").onchange = e => {
+    drawParams.blobBorder = e.target.value;
+  }
 } // end setupUI
 
 function loop()
@@ -149,4 +169,4 @@ function loop()
     canvas.draw(drawParams);
 }
 
-export {init, electricAngle};
+export {init, electricAngle, gradientColor1, gradientColor2, gradientColor3};

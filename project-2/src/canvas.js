@@ -38,7 +38,7 @@ function setupCanvas(canvasElement,analyserNodeRef){
 	canvasWidth = canvasElement.width;
 	canvasHeight = canvasElement.height;
 	// create a gradient that runs top to bottom
-	gradient = utils.getLinearGradient(ctx,0,0,0,canvasHeight,[{percent:0,color:"#000000"},{percent:.5,color:"#00ffff"},{percent:1,color:"#0000ff"}]);
+	gradient = utils.getLinearGradient(ctx,0,0,0,canvasHeight,[{percent:0,color:main.gradientColor1},{percent:.5,color:main.gradientColor2},{percent:1,color:main.gradientColor3}]);
 	// keep a reference to the analyser node
 	analyserNode = analyserNodeRef;
 	// this is the array where the analyser data will be stored
@@ -62,6 +62,7 @@ function draw(params={}){
 	// Draw background gradient
 	if(params.showGradient)
     {
+        gradient = utils.getLinearGradient(ctx,0,0,0,canvasHeight,[{percent:0,color:main.gradientColor1},{percent:.5,color:main.gradientColor2},{percent:1,color:main.gradientColor3}]);
         ctx.save();
         ctx.fillStyle = gradient;
         ctx.globalAlpha = .3;
@@ -303,7 +304,7 @@ function draw(params={}){
     // Draw Deformed Circle in Center
     if(params.showPerlin)
     {
-        drawDeformedCircle(ctx, {x:canvasWidth/2,y:canvasHeight/2,radius:20},frequency,magnitude,t/2);
+        drawDeformedCircle(ctx, {x:canvasWidth/2,y:canvasHeight/2,radius:20},frequency,magnitude,t/2, params);
         t+=tIncrease;
     }
     
@@ -380,13 +381,14 @@ function drawCircle(ctx,x,y,radius,color)
 }
 
 // Deformed circle for the center of the canvas
-function drawDeformedCircle(ctx,circle,frequency,magnitude,t=0) 
+function drawDeformedCircle(ctx,circle,frequency,magnitude,t=0, params) 
 {
     // Save/Restore Loop
     ctx.save();
 
     // Set the styling
-    ctx.fillStyle = "#00ffff";
+    ctx.fillStyle = params.blobFill;
+    ctx.strokeStyle = params.blobBorder;
     ctx.lineWidth = 4;
     
     // Begin path for drawing
