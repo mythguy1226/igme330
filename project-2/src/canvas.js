@@ -8,6 +8,7 @@
 */
 
 import * as utils from './utils.js';
+import * as main from './main.js';
 
 // Canvas fields
 let ctx,canvasWidth,canvasHeight,gradient,analyserNode,audioData;
@@ -69,9 +70,135 @@ function draw(params={}){
     }
     
     // Show electrical waves
-    if(params.showWaves)
+    if(params.showElectric)
     {
-        drawWaves();
+        let deltaAngle = main.electricAngle;
+        let color = params.electricColor;
+        // Save/Restore Loop
+        ctx.save();
+
+        // Left Wave
+        for(let i = 0; i < audioData.length; i++)
+        {
+            // Increase needed values to get the electrical effect
+            y += 10;
+            if(deltaAngle == 0)
+            {
+                angle += 0;
+            }
+            else if(deltaAngle == 0.1)
+            {
+                angle += 0.1;
+            }
+            else if(deltaAngle == 0.2)
+            {
+                angle += 0.2;
+            }
+            else if(deltaAngle == 0.3)
+            {
+                angle += 0.3;
+            }
+            else if(deltaAngle == 0.4)
+            {
+                angle += 0.4;
+            }
+            else if(deltaAngle == 0.5)
+            {
+                angle += 0.5;
+            }
+            else if(deltaAngle == 0.6)
+            {
+                angle += 0.6;
+            }
+            else if(deltaAngle == 0.7)
+            {
+                angle += 0.7;
+            }
+            else if(deltaAngle == 0.8)
+            {
+                angle += 0.8;
+            }
+            else if(deltaAngle == 0.9)
+            {
+                angle += 0.9;
+            }
+            else if(deltaAngle == 1)
+            {
+                angle += 1;
+            }
+            x = 100 + (Math.cos(angle) * (audioData[i] / 5));
+            drawCircle(ctx,x,y,4,color);
+
+            // Restart trig loop
+            if(y > canvasWidth)
+            {
+                y = 0;
+            }
+        }
+        ctx.restore(); // End Loop
+
+        // Save/Restore Loop
+        ctx.save();
+
+        // Right Wave
+        for(let i = 0; i < audioData.length; i++)
+        {
+            // Increase needed values to get the electrical effect
+            y += 10;
+            if(deltaAngle == 0)
+            {
+                angle += 0;
+            }
+            else if(deltaAngle == 0.1)
+            {
+                angle += 0.1;
+            }
+            else if(deltaAngle == 0.2)
+            {
+                angle += 0.2;
+            }
+            else if(deltaAngle == 0.3)
+            {
+                angle += 0.3;
+            }
+            else if(deltaAngle == 0.4)
+            {
+                angle += 0.4;
+            }
+            else if(deltaAngle == 0.5)
+            {
+                angle += 0.5;
+            }
+            else if(deltaAngle == 0.6)
+            {
+                angle += 0.6;
+            }
+            else if(deltaAngle == 0.7)
+            {
+                angle += 0.7;
+            }
+            else if(deltaAngle == 0.8)
+            {
+                angle += 0.8;
+            }
+            else if(deltaAngle == 0.9)
+            {
+                angle += 0.9;
+            }
+            else if(deltaAngle == 1)
+            {
+                angle += 1;
+            }
+            x = 700 + (Math.cos(angle) * (audioData[i] / 5));
+            drawCircle(ctx,x,y,4,color);
+
+            // Restart trig loop
+            if(y > canvasWidth)
+            {
+                y = 0;
+            }
+        }
+        ctx.restore(); // End Loop
     }
 
 	// Draw bars in radial manner
@@ -143,12 +270,27 @@ function draw(params={}){
             // Utiize different trig functions for different effects
             waveX += 1;
             waveAngle += 0.2;
-            waveY = canvasWidth/2 + (Math.atan(waveAngle) * (audioData[i]/2));
+            if(params.waveStyle == "Atan")
+            {
+                waveY = canvasWidth/2 + (Math.atan(waveAngle) * (audioData[i]/2));
+            }
+            else if(params.waveStyle == "Sin")
+            {
+                waveY = canvasWidth/2 + (Math.sin(waveAngle) * (audioData[i]/2));
+            }
+            else if(params.waveStyle == "Cos")
+            {
+                waveY = canvasWidth/2 + (Math.cos(waveAngle) * (audioData[i]/2));
+            }
+            else if(params.waveStyle == "Tan")
+            {
+                waveY = canvasWidth/2 + (Math.tan(waveAngle) * (audioData[i]/2));
+            }
             ctx.translate(canvasWidth/2, canvasHeight/2);
             ctx.rotate(.5);
             ctx.translate(-canvasWidth/2, -canvasHeight/2);
 
-            drawCircle(ctx,waveX/1.5,waveY/1.5,4,`#00ffff`);
+            drawCircle(ctx,waveX/1.5,waveY/1.5,4,params.waveColor);
             if(waveX > 400)
             {
                 waveX = 380;
@@ -237,50 +379,6 @@ function drawCircle(ctx,x,y,radius,color)
     ctx.restore();
 }
 
-// Method that Draws the electricity waves on both ends of the canvas
-function drawWaves()
-{
-    // Save/Restore Loop
-    ctx.save();
-
-    // Left Wave
-    for(let i = 0; i < audioData.length; i++)
-    {
-        // Increase needed values to get the electrical effect
-        y += 10;
-        angle += 0.5;
-        x = 100 + (Math.cos(angle) * (audioData[i] / 5));
-        drawCircle(ctx,x,y,4,`#00ffff`);
-
-        // Restart trig loop
-        if(y > canvasWidth)
-        {
-            y = 0;
-        }
-    }
-    ctx.restore(); // End Loop
-
-    // Save/Restore Loop
-    ctx.save();
-
-    // Right Wave
-    for(let i = 0; i < audioData.length; i++)
-    {
-        // Increase needed values to get the electrical effect
-        y += 10;
-        angle += 0.5;
-        x = 700 + (Math.cos(angle) * (audioData[i] / 5));
-        drawCircle(ctx,x,y,4,`#00ffff`);
-
-        // Restart trig loop
-        if(y > canvasWidth)
-        {
-            y = 0;
-        }
-    }
-    ctx.restore(); // End Loop
-}
-
 // Deformed circle for the center of the canvas
 function drawDeformedCircle(ctx,circle,frequency,magnitude,t=0) 
 {
@@ -297,11 +395,11 @@ function drawDeformedCircle(ctx,circle,frequency,magnitude,t=0)
     // Sample points evenly around the circle
     const numPoints = Math.floor(4 * circle.radius + 20);
     for (let i = 0; i <= numPoints; i++) {
-            const angle = (2 * Math.PI * i) / numPoints;
+            const deformedAngle = (2 * Math.PI * i) / numPoints;
 
             // Figure out the x/y coordinates for the given angle
-            const x = Math.cos(angle);
-            const y = Math.sin(angle);
+            const x = Math.cos(deformedAngle);
+            const y = Math.sin(deformedAngle);
 
             // Randomly deform the radius of the circle at this point
             const deformation = simplex.noise3D(x * frequency,

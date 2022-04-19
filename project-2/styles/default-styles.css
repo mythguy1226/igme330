@@ -40,3 +40,20 @@ button[data-playing="no"]:after{
   font-size: 1.2rem;
   width: 8rem;
 }
+hr
+{
+  border-top: 1px solid #000;
+}
+
+#subheadings h2 {
+  color: #ffffff;
+}
+#subheadings p {
+  color: #ffffff;
+}
+#subheadings a {
+  color: hsl(217, 71%, 53%);
+}
+#subheadings a:hover {
+  color: hsl(204, 86%, 53%);
+}

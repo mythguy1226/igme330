@@ -20,8 +20,13 @@ const drawParams = {
   showInvert : false,
   showEmboss : false,
   showWaves: true,
-  showPerlin: true
+  showElectric: true,
+  showPerlin: true,
+  electricColor: "#00ffff",
+  waveColor: "#00ffff",
+  waveStyle: "Atan"
 }
+let electricAngle = 0.1;
 
 // 1 - here we are faking an enumeration
 const DEFAULTS = Object.freeze({
@@ -114,6 +119,28 @@ function setupUI(canvasElement){
     drawParams.showEmboss= e.target.checked;
   }
 
+  document.querySelector("#electric-color").onchange = e => {
+    drawParams.electricColor = e.target.value;
+  }
+
+  document.querySelector("#electric-angle").oninput = e => {
+    electricAngle = e.target.value;
+    document.querySelector("#electric-label").innerHTML = e.target.value;
+  };
+  document.querySelector("#electric-angle").dispatchEvent(new Event("#input"));
+
+  document.querySelector("#electric-enabled").onchange = e => {
+    drawParams.showElectric= e.target.checked;
+  }
+  document.querySelector("#wave-enabled").onchange = e => {
+    drawParams.showWaves= e.target.checked;
+  }
+  document.querySelector("#wave-color").onchange = e => {
+    drawParams.waveColor = e.target.value;
+  }
+  document.querySelector("#wave-style").onchange = e => {
+    drawParams.waveStyle = e.target.value;
+  }
 } // end setupUI
 
 function loop()
@@ -122,4 +149,4 @@ function loop()
     canvas.draw(drawParams);
 }
 
-export {init};
+export {init, electricAngle};
