@@ -10,9 +10,10 @@
 import * as utils from './utils.js';
 import * as audio from './audio.js';
 import * as canvas from './canvas.js';
+import * as loader from './loader.js';
 
 // Draw parameters object
-const drawParams = {
+let drawParams = {
   showGradient : true,
   showBars : true,
   showCircles : true,
@@ -30,7 +31,11 @@ const drawParams = {
   barColor: "rgba(255,255,255,0.50)",
   circleColor1: "#ffffff",
   circleColor2: "#0000ff",
-  circleColor3: "#ffff00"
+  circleColor3: "#ffff00",
+  electricAngle: 0.1,
+  gradientColor1: "#000000",
+  gradientColor2: "#00ffff",
+  gradientColor3: "#0000ff"
 }
 let electricAngle = 0.1;
 let gradientColor1 = "#000000";
@@ -43,6 +48,9 @@ const DEFAULTS = Object.freeze({
 });
 
 function init(){
+    //drawParams = loader.presets["default"];
+    
+    //convertJson(loader.presets["default"]);
     audio.setupWebaudio(DEFAULTS.sound1);
     let canvasElement = document.querySelector("canvas"); // hookup <canvas> element
     setupUI(canvasElement);
@@ -98,6 +106,24 @@ function setupUI(canvasElement){
       }
   }
 
+  // Change the preset
+  document.querySelector("#presetSelect").onchange = e => {
+    drawParams = loader.presets[e.target.value];
+    // Set the default values
+    document.querySelector("#circles-color1").value = drawParams.circleColor1;
+    document.querySelector("#circles-color2").value = drawParams.circleColor2;
+    document.querySelector("#circles-color3").value = drawParams.circleColor3;
+    document.querySelector("#wave-color").value = drawParams.waveColor;
+    document.querySelector("#bars-color").value = drawParams.barColor;
+    document.querySelector("#blob-color1").value = drawParams.blobFill;
+    document.querySelector("#blob-color2").value = drawParams.blobBorder;
+    document.querySelector("#grad-color1").value = drawParams.gradientColor1;
+    document.querySelector("#grad-color2").value = drawParams.gradientColor2;
+    document.querySelector("#grad-color3").value = drawParams.gradientColor3;
+    document.querySelector("#electric-color").value = drawParams.electricColor;
+    document.querySelector("#electric-angle").value = drawParams.electricAngle;
+  }
+
   // Checkbox for gradient
   document.querySelector("#gradientCB").onchange = e => {
     drawParams.showGradient = e.target.checked;
@@ -134,6 +160,7 @@ function setupUI(canvasElement){
 
   document.querySelector("#electric-angle").oninput = e => {
     electricAngle = e.target.value;
+    drawParams.electricAngle = e.target.value;
     document.querySelector("#electric-label").innerHTML = e.target.value;
   };
   document.querySelector("#electric-angle").dispatchEvent(new Event("#input"));
@@ -152,12 +179,15 @@ function setupUI(canvasElement){
   }
   document.querySelector("#grad-color1").onchange = e => {
     gradientColor1 = e.target.value;
+    drawParams.gradientColor1 = e.target.value;
   }
   document.querySelector("#grad-color2").onchange = e => {
     gradientColor2 = e.target.value;
+    drawParams.gradientColor2 = e.target.value;
   }
   document.querySelector("#grad-color3").onchange = e => {
     gradientColor3 = e.target.value;
+    drawParams.gradientColor3 = e.target.value;
   }
   document.querySelector("#blob-color1").onchange = e => {
     drawParams.blobFill = e.target.value;
@@ -189,6 +219,7 @@ function setupUI(canvasElement){
   document.querySelector("#grad-color1").value = gradientColor1;
   document.querySelector("#grad-color2").value = gradientColor2;
   document.querySelector("#grad-color3").value = gradientColor3;
+  document.querySelector("#electric-color").value = drawParams.electricColor;
 
 
 } // end setupUI

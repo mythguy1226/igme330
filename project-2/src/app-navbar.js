@@ -121,6 +121,12 @@ template.innerHTML = `
             visibility: hidden;
             width: 95%;
         }
+
+        .navbar-start a:hover
+        {
+            background-color: #fff;
+            color: #000;
+        }
     }
   </style>
   <nav id="nav" class="navbar has-shadow">

@@ -62,7 +62,7 @@ function draw(params={}){
 	// Draw background gradient
 	if(params.showGradient)
     {
-        gradient = utils.getLinearGradient(ctx,0,0,0,canvasHeight,[{percent:0,color:main.gradientColor1},{percent:.5,color:main.gradientColor2},{percent:1,color:main.gradientColor3}]);
+        gradient = utils.getLinearGradient(ctx,0,0,0,canvasHeight,[{percent:0,color:params.gradientColor1},{percent:.5,color:params.gradientColor2},{percent:1,color:params.gradientColor3}]);
         ctx.save();
         ctx.fillStyle = gradient;
         ctx.globalAlpha = .3;
@@ -73,7 +73,7 @@ function draw(params={}){
     // Show electrical waves
     if(params.showElectric)
     {
-        let deltaAngle = main.electricAngle;
+        let deltaAngle = params.electricAngle;
         let color = params.electricColor;
         // Save/Restore Loop
         ctx.save();
