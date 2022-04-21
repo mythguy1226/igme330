@@ -12,12 +12,12 @@
 <main>
 	<app-navbar data-page="app"></app-navbar>
 
-	<canvas width="800" height="400"></canvas>
 	<div class="tile is-ancestor">
 		<div class="tile is-vertical is-12">
 			<div class="tile">
-				<div class="tile is-vertical is-parent is-6">
+				<div class="tile is-vertical is-parent is-4">
 					<div class="tile is-child">
+						<canvas width="800" height="400"></canvas>
 						<div id="play-controls" class="section">
 							<section>
 								<button id="playButton" data-playing="no"></button>
@@ -39,74 +39,67 @@
 							</section>
 							<section>
 								Volume: <input type="range" id="volumeSlider" min="0" max="2" value="1" step="0.01">
-								<span id="volumeLabel">???</span>
+								<span id="volumeLabel">50</span>
 							</section>
 						</div>
 					</div>
 				</div>
-				<div class="tile is-vertical is-parent is-6">
-					<div class="tile is-child">
-						<div id="filter-controls" class="section">
-							<h2>Filters:</h2>
-							<span><input type="checkbox" id="noiseCB"><label for="noiseCB">Show Noise</label></span><br>
-							<span><input type="checkbox" id="invertCB"><label for="invertCB">Show Invert</label></span><br>
-							<span><input type="checkbox" id="embossCB"><label for="embossCB">Show Emboss</label></span>
-						</div>
-					</div>
-					<hr>
-					<div class="tile is-child">
-						<div id="shape-controls" class="section">
-							<h2>Shapes:</h2>
-							<span><input type="checkbox" id="gradientCB" checked><label for="gradientCB">Show Gradient</label></span><br>
-							<span><input type="checkbox" id="barsCB" checked><label for="barsCB">Show Bars</label></span><br>
-							<span><input type="checkbox" id="circlesCB" checked><label for="circlesCB">Show Circles</label></span>
-						</div>
-					</div>
-					<hr>
-					<div class="tile is-child">
-						<div id="electric-controls" class="section">
-							<h2>Electricity:</h2>
-							<span><input type="checkbox" id="electric-enabled" checked><label for="electric-enabled">Show Electricity</label></span><br>
-							<span><label for="electric-color">Edit Color</label><input type="color" id="electric-color"></span><br>
-							<span>Edit Angle<input type="range" id="electric-angle" min="0" max="1" value="0.1" step="0.1"></span>
-							<span id="electric-label">???</span>
-						</div>
-					</div>
-					<hr>
-					<div class="tile is-child">
-						<div id="wave-controls" class="section">
-							<h2>Wave:</h2>
-							<span><input type="checkbox" id="wave-enabled" checked><label for="wave-enabled">Show Wave</label></span><br>
-							<span><label for="wave-color">Edit Color</label><input type="color" id="wave-color"></span><br>
-							<span>Choose Style
-								<select id="wave-style">
-									<option>Sin</option>
-									<option>Cos</option>
-									<option>Tan</option>
-									<option selected>Atan</option>
-								</select>
-							</span>
-						</div>
-					</div>
-					<hr>
-					<div class="tile is-child">
-						<div id="gradient-controls" class="section">
-							<h2>Gradient Colors:</h2>
-							<span><label for="grad-color1">Edit Color 1</label><input type="color" id="grad-color1"></span><br>
-							<span><label for="grad-color2">Edit Color 2</label><input type="color" id="grad-color2"></span><br>
-							<span><label for="grad-color3">Edit Color 3</label><input type="color" id="grad-color3"></span><br>
-						</div>
-					</div>
-					<hr>
-					<div class="tile is-child">
-						<div id="blob-controls" class="section">
-							<h2>Blob Colors:</h2>
-							<span><label for="blob-color1">Edit Fill Color</label><input type="color" id="blob-color1"></span><br>
-							<span><label for="blob-color2">Edit Border Color</label><input type="color" id="blob-color2"></span><br>
-						</div>
-					</div>
-					<hr>
+			</div>
+			<div id="visual-controls" >
+				<div id="filter-controls" class="section">
+					<h2><b>Filters:</b></h2>
+					<span><input type="checkbox" id="noiseCB"><label for="noiseCB">Show Noise</label></span><br>
+					<span><input type="checkbox" id="invertCB"><label for="invertCB">Show Invert</label></span><br>
+					<span><input type="checkbox" id="embossCB"><label for="embossCB">Show Emboss</label></span>
 				</div>
+				<div id="circle-controls" class="section">
+					<h2><b>Circle Controls:</b></h2>
+					<span><input type="checkbox" id="circlesCB" checked><label for="circlesCB">Show Circles</label></span><br>
+					<span><label for="circles-color1">Edit Color 1</label><input type="color" id="circles-color1"></span><br>
+					<span><label for="circles-color2">Edit Color 2</label><input type="color" id="circles-color2"></span><br>
+					<span><label for="circles-color3">Edit Color 3</label><input type="color" id="circles-color3"></span>
+				</div>
+				<div id="bar-controls" class="section">
+					<h2><b>Bar Controls:</b></h2>
+					<span><input type="checkbox" id="barsCB" checked><label for="barsCB">Show Bars</label></span><br>
+					<span><label for="bars-color">Edit Color</label><input type="color" id="bars-color"></span>
+				</div>
+				<div id="electric-controls" class="section">
+					<h2><b>Electricity:</b></h2>
+					<span><input type="checkbox" id="electric-enabled" checked><label for="electric-enabled">Show Electricity</label></span><br>
+					<span><label for="electric-color">Edit Color</label><input type="color" id="electric-color"></span><br>
+					<span>Edit Angle<input type="range" id="electric-angle" min="0" max="1" value="0.1" step="0.1"></span>
+					<span id="electric-label">0.1</span>
+				</div>
+				<hr>
+				<div id="wave-controls" class="section">
+					<h2><b>Wave:</b></h2>
+					<span><input type="checkbox" id="wave-enabled" checked><label for="wave-enabled">Show Wave</label></span><br>
+					<span><label for="wave-color">Edit Color</label><input type="color" id="wave-color"></span><br>
+					<span>Choose Style
+						<select id="wave-style">
+							<option>Sin</option>
+							<option>Cos</option>
+							<option>Tan</option>
+							<option selected>Atan</option>
+						</select>
+					</span>
+				</div>
+				<hr>
+				<div id="gradient-controls" class="section">
+					<h2><b>Gradient Controls:</b></h2>
+					<span><input type="checkbox" id="gradientCB" checked><label for="gradientCB">Show Gradient</label></span><br>
+					<span><label for="grad-color1">Edit Color 1</label><input type="color" id="grad-color1"></span><br>
+					<span><label for="grad-color2">Edit Color 2</label><input type="color" id="grad-color2"></span><br>
+					<span><label for="grad-color3">Edit Color 3</label><input type="color" id="grad-color3"></span><br>
+				</div>
+				<hr>
+				<div id="blob-controls" class="section">
+					<h2><b>Blob Colors:</b></h2>
+					<span><label for="blob-color1">Edit Fill Color</label><input type="color" id="blob-color1"></span><br>
+					<span><label for="blob-color2">Edit Border Color</label><input type="color" id="blob-color2"></span><br>
+				</div>
+				<hr>
 			</div>
 		</div>
 	</div>

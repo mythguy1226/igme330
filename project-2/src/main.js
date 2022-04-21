@@ -26,7 +26,11 @@ const drawParams = {
   waveColor: "#00ffff",
   waveStyle: "Atan",
   blobFill: "#00ffff",
-  blobBorder: "#000000"
+  blobBorder: "#000000",
+  barColor: "rgba(255,255,255,0.50)",
+  circleColor1: "#ffffff",
+  circleColor2: "#0000ff",
+  circleColor3: "#ffff00"
 }
 let electricAngle = 0.1;
 let gradientColor1 = "#000000";
@@ -161,6 +165,32 @@ function setupUI(canvasElement){
   document.querySelector("#blob-color2").onchange = e => {
     drawParams.blobBorder = e.target.value;
   }
+  document.querySelector("#bars-color").onchange = e => {
+    drawParams.barColor = e.target.value;
+  }
+  document.querySelector("#circles-color1").onchange = e => {
+    drawParams.circleColor1 = e.target.value;
+  }
+  document.querySelector("#circles-color2").onchange = e => {
+    drawParams.circleColor2 = e.target.value;
+  }
+  document.querySelector("#circles-color3").onchange = e => {
+    drawParams.circleColor3 = e.target.value;
+  }
+
+  // Set the default values
+  document.querySelector("#circles-color1").value = drawParams.circleColor1;
+  document.querySelector("#circles-color2").value = drawParams.circleColor2;
+  document.querySelector("#circles-color3").value = drawParams.circleColor3;
+  document.querySelector("#wave-color").value = drawParams.waveColor;
+  document.querySelector("#bars-color").value = "#ffffff";
+  document.querySelector("#blob-color1").value = drawParams.blobFill;
+  document.querySelector("#blob-color2").value = drawParams.blobBorder;
+  document.querySelector("#grad-color1").value = gradientColor1;
+  document.querySelector("#grad-color2").value = gradientColor2;
+  document.querySelector("#grad-color3").value = gradientColor3;
+
+
 } // end setupUI
 
 function loop()

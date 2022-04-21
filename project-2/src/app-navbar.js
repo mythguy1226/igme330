@@ -14,6 +14,7 @@ template.innerHTML = `
     a.underline
     {
         position: relative;
+        color: #fff;
     }
     a.underline:before 
     {
@@ -55,6 +56,12 @@ template.innerHTML = `
         color: #fff;
     }
     #nav-links
+    {
+        background-color: #0066ff;
+        color: #fff;
+    }
+
+    .navbar-start a:hover
     {
         background-color: #0066ff;
         color: #fff;

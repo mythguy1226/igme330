@@ -208,7 +208,7 @@ function draw(params={}){
         let topSpacing = 75;
 
         ctx.save();
-        ctx.strokeStyle = `rgba(255,255,255,0.50)`;
+        ctx.strokeStyle = params.barColor;
         ctx.lineWidth = 5;
         let offset = 5;
         // loop through data and draw
@@ -238,26 +238,32 @@ function draw(params={}){
 
             let circleRadius = percent * maxRadius;
             ctx.beginPath();
-            ctx.fillStyle = utils.makeColor(255, 111, 111, .34 - percent/3.0);
+            ctx.fillStyle = utils.makeColor(hexaToDecimal(params.circleColor1[1] + params.circleColor1[2]), hexaToDecimal(params.circleColor1[3] + params.circleColor1[4]), hexaToDecimal(params.circleColor1[5] + params.circleColor1[6]), .34 - percent/3.0);
             ctx.arc(canvasWidth/2, canvasHeight/2, circleRadius, 0, 2 * Math.PI, false);
             ctx.fill();
             ctx.closePath();
 
             ctx.beginPath();
-            ctx.fillStyle = utils.makeColor(0, 0, 255, .10 - percent/10.0);
+            ctx.fillStyle = utils.makeColor(hexaToDecimal(params.circleColor2[1] + params.circleColor2[2]), hexaToDecimal(params.circleColor2[3] + params.circleColor2[4]), hexaToDecimal(params.circleColor2[5] + params.circleColor2[6]), .10 - percent/10.0);
             ctx.arc(canvasWidth/2, canvasHeight/2, circleRadius * 1.5, 0, 2 * Math.PI, false);
             ctx.fill();
             ctx.closePath();
 
             ctx.save();
             ctx.beginPath();
-            ctx.fillStyle = utils.makeColor(200, 200, 0, .5 - percent/5.0);
+            ctx.fillStyle = utils.makeColor(hexaToDecimal(params.circleColor3[1] + params.circleColor3[2]), hexaToDecimal(params.circleColor3[3] + params.circleColor3[4]), hexaToDecimal(params.circleColor3[5] + params.circleColor3[6]), .5 - percent/5.0);
             ctx.arc(canvasWidth/2, canvasHeight/2, circleRadius, 0, 2 * Math.PI, false);
             ctx.fill();
             ctx.closePath();
             ctx.restore();
         }
         ctx.restore();
+    }
+
+    // Function that converts hexadecimal string values to decimal values for rgba()
+    function hexaToDecimal(string){
+        // Parse the string
+        return parseInt(string, 16);
     }
 
     // Draw the wave in the center surrounding the circle
