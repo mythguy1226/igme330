@@ -122,6 +122,9 @@ function setupUI(canvasElement){
     document.querySelector("#grad-color3").value = drawParams.gradientColor3;
     document.querySelector("#electric-color").value = drawParams.electricColor;
     document.querySelector("#electric-angle").value = drawParams.electricAngle;
+    document.querySelector("#show-perlin").checked = drawParams.showPerlin;
+    document.querySelector("#wave-style").value = drawParams.waveStyle;
+    document.querySelector("#electric-label").innerHTML = drawParams.electricAngle;
   }
 
   // Checkbox for gradient
@@ -154,10 +157,12 @@ function setupUI(canvasElement){
     drawParams.showEmboss= e.target.checked;
   }
 
+  // Electricity Color
   document.querySelector("#electric-color").onchange = e => {
     drawParams.electricColor = e.target.value;
   }
 
+  // Electricity Angle
   document.querySelector("#electric-angle").oninput = e => {
     electricAngle = e.target.value;
     drawParams.electricAngle = e.target.value;
@@ -165,18 +170,27 @@ function setupUI(canvasElement){
   };
   document.querySelector("#electric-angle").dispatchEvent(new Event("#input"));
 
+  // Toggle Electricity
   document.querySelector("#electric-enabled").onchange = e => {
     drawParams.showElectric= e.target.checked;
   }
+
+  // Toggle Wave
   document.querySelector("#wave-enabled").onchange = e => {
     drawParams.showWaves= e.target.checked;
   }
+
+  // Wave Color
   document.querySelector("#wave-color").onchange = e => {
     drawParams.waveColor = e.target.value;
   }
+
+  // Wave Style (Trig function)
   document.querySelector("#wave-style").onchange = e => {
     drawParams.waveStyle = e.target.value;
   }
+
+  // Gradient colors
   document.querySelector("#grad-color1").onchange = e => {
     gradientColor1 = e.target.value;
     drawParams.gradientColor1 = e.target.value;
@@ -189,15 +203,26 @@ function setupUI(canvasElement){
     gradientColor3 = e.target.value;
     drawParams.gradientColor3 = e.target.value;
   }
+
+  // Perlin noise colors
   document.querySelector("#blob-color1").onchange = e => {
     drawParams.blobFill = e.target.value;
   }
   document.querySelector("#blob-color2").onchange = e => {
     drawParams.blobBorder = e.target.value;
   }
+
+  // Toggle Perlin noise
+  document.querySelector("#show-perlin").onchange = e => {
+    drawParams.showPerlin = e.target.checked;
+  }
+
+  // Bar color
   document.querySelector("#bars-color").onchange = e => {
     drawParams.barColor = e.target.value;
   }
+
+  // Circle colors
   document.querySelector("#circles-color1").onchange = e => {
     drawParams.circleColor1 = e.target.value;
   }
