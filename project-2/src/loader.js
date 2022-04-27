@@ -1,5 +1,7 @@
 import * as main from "./main.js";
 import "./app-navbar.js";
+import "./header.js";
+import "./footer.js";
 
 let presets = {};
 window.onload = ()=>{

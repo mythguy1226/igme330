@@ -4,12 +4,13 @@ template.innerHTML = `
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Akshar:wght@300&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Cantarell:ital@1&display=swap');
     :host{
         user-select: none;
     }
     a
     {
-        font-family: 'Akshar', sans-serif;
+        font-family: 'Cantarell', sans-serif;
     }
     a.underline
     {
@@ -54,6 +55,7 @@ template.innerHTML = `
     {
         background-color: #0066ff;
         color: #fff;
+        font-family: 'Cantarell', sans-serif;
     }
     #nav-links
     {

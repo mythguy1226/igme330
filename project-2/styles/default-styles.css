@@ -1,6 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Cantarell:ital@1&display=swap');
 body {
 	background: #eeeeee;
-	font-family: tahoma, verdana, sans serif;
+	font-family: 'Cantarell', sans-serif;
 }
 
 canvas {
@@ -62,4 +63,7 @@ hr
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
+  background-color: #333333;
+  color: #fff;
+  border: #000 solid 10px;
 }

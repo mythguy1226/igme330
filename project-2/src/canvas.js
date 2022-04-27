@@ -62,6 +62,7 @@ function draw(params={}){
 	// Draw background gradient
 	if(params.showGradient)
     {
+        // Base new gradient colors off of draw params
         gradient = utils.getLinearGradient(ctx,0,0,0,canvasHeight,[{percent:0,color:params.gradientColor1},{percent:.5,color:params.gradientColor2},{percent:1,color:params.gradientColor3}]);
         ctx.save();
         ctx.fillStyle = gradient;
@@ -82,6 +83,8 @@ function draw(params={}){
         for(let i = 0; i < audioData.length; i++)
         {
             // Increase needed values to get the electrical effect
+            // I know this is against DRY however it was the only way to get it to work
+            // if you make it a one-liner such as angle += deltaAngle, the effect breaks
             y += 10;
             if(deltaAngle == 0)
             {
@@ -145,6 +148,8 @@ function draw(params={}){
         for(let i = 0; i < audioData.length; i++)
         {
             // Increase needed values to get the electrical effect
+            // I know this is against DRY however it was the only way to get it to work
+            // if you make it a one-liner such as angle += deltaAngle, the effect breaks
             y += 10;
             if(deltaAngle == 0)
             {
@@ -215,12 +220,18 @@ function draw(params={}){
         for(let i = 0; i < audioData.length; i++)
         {
             ctx.beginPath();
+
+            // Bar positions and length
             ctx.moveTo((canvasWidth/2) + topSpacing, (canvasHeight/2) + topSpacing);
             ctx.lineTo((canvasWidth/2) + audioData[i]/4 + topSpacing, (canvasHeight/2) + audioData[i]/4 + topSpacing);
             ctx.lineTo((canvasWidth/2) + audioData[i]/4 + topSpacing + offset, (canvasHeight/2) + audioData[i]/4 + topSpacing + offset);
+            
+            // Rotate bars around center of canvas in radial manner
             ctx.translate(canvasWidth/2, canvasHeight/2);
             ctx.rotate(.1);
             ctx.translate(-canvasWidth/2, -canvasHeight/2);
+
+            // Stroke bars
             ctx.stroke();
         }
         ctx.restore();
@@ -229,28 +240,43 @@ function draw(params={}){
 	// Draw Center Circles
     if(params.showCircles)
     {
+        // Needed fields
         let maxRadius = canvasHeight/4;
         ctx.save();
         ctx.globalAlpha = 0.5;
+
+        // Loop through audio data
         for(let i = 0; i < audioData.length; i++)
         {
+            // Percent used for different alpha values and radii
             let percent = audioData[i] / 255;
 
+            // Calculate radius
             let circleRadius = percent * maxRadius;
+
+            // First Circle
             ctx.beginPath();
+            
+            // Make fill based on draw params
             ctx.fillStyle = utils.makeColor(hexaToDecimal(params.circleColor1[1] + params.circleColor1[2]), hexaToDecimal(params.circleColor1[3] + params.circleColor1[4]), hexaToDecimal(params.circleColor1[5] + params.circleColor1[6]), .34 - percent/3.0);
             ctx.arc(canvasWidth/2, canvasHeight/2, circleRadius, 0, 2 * Math.PI, false);
             ctx.fill();
             ctx.closePath();
 
+            // Second Circle
             ctx.beginPath();
+            
+            // Make fill based on draw params
             ctx.fillStyle = utils.makeColor(hexaToDecimal(params.circleColor2[1] + params.circleColor2[2]), hexaToDecimal(params.circleColor2[3] + params.circleColor2[4]), hexaToDecimal(params.circleColor2[5] + params.circleColor2[6]), .10 - percent/10.0);
             ctx.arc(canvasWidth/2, canvasHeight/2, circleRadius * 1.5, 0, 2 * Math.PI, false);
             ctx.fill();
             ctx.closePath();
 
             ctx.save();
+            // Third Circle
             ctx.beginPath();
+            
+            // Make fill based on draw params
             ctx.fillStyle = utils.makeColor(hexaToDecimal(params.circleColor3[1] + params.circleColor3[2]), hexaToDecimal(params.circleColor3[3] + params.circleColor3[4]), hexaToDecimal(params.circleColor3[5] + params.circleColor3[6]), .5 - percent/5.0);
             ctx.arc(canvasWidth/2, canvasHeight/2, circleRadius, 0, 2 * Math.PI, false);
             ctx.fill();
@@ -293,12 +319,15 @@ function draw(params={}){
             {
                 waveY = canvasWidth/2 + (Math.tan(waveAngle) * (audioData[i]/2));
             }
+
+            // Rotation around center of canvas
             ctx.translate(canvasWidth/2, canvasHeight/2);
             ctx.rotate(.5);
             ctx.translate(-canvasWidth/2, -canvasHeight/2);
 
+            // Draw a circle at each point
             drawCircle(ctx,waveX/1.5,waveY/1.5,4,params.waveColor);
-            if(waveX > 400)
+            if(waveX > 400) // Reset X-Value
             {
                 waveX = 380;
             }
@@ -311,10 +340,9 @@ function draw(params={}){
     if(params.showPerlin)
     {
         drawDeformedCircle(ctx, {x:canvasWidth/2,y:canvasHeight/2,radius:20},frequency,magnitude,t/2, params);
-        t+=tIncrease;
+        t+=tIncrease; 
     }
     
-    // 6 - bitmap manipulation
 	// TODO: right now. we are looping though every pixel of the canvas (320,000 of them!), 
 	// regardless of whether or not we are applying a pixel effect
 	// At some point, refactor this code so that we are looping though the image data only if
@@ -340,8 +368,7 @@ function draw(params={}){
 			// data[i+3] is the alpha channel
 			// zero out the red and green and blue channels
 			// make the red channel 100% red
-            data[i] = data[i+1] = data[i+2] = 0;
-            data[i + 1] = 255;
+            data[i] = data[i+1] = data[i+2] = 122;
         }// end if
 
         if(params.showInvert) // Invert filter
@@ -386,7 +413,7 @@ function drawCircle(ctx,x,y,radius,color)
     ctx.restore();
 }
 
-// Deformed circle for the center of the canvas
+// Deformed circle for the center of the canvas utilizing perlin noise
 function drawDeformedCircle(ctx,circle,frequency,magnitude,t=0, params) 
 {
     // Save/Restore Loop
